@@ -25,7 +25,7 @@ const Navbar = () => {
               className="h-9 sm:h-10 w-auto object-contain brightness-110 drop-shadow-sm bg-slate-900/50 backdrop-blur-xl p-1 rounded-full"
             />
           </Link>
-          <div className="hidden md:flex justify-center items-center bg-slate-900/50 backdrop-blur-xl border border-white/10 p-1.5 rounded-full mx-auto shadow-lg">
+          <div className="hidden md:flex justify-center items-center gap-4 bg-slate-900/50 backdrop-blur-xl border border-white/10 p-1.5 rounded-full mx-auto shadow-lg">
             {[
               { label: "Homepage", path: "/" },
               { label: "About Us", path: "/about" },
