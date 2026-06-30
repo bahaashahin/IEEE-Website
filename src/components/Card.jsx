@@ -1,0 +1,90 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
+
+const Card = ({
+  imageSrc,
+  name,
+  text,
+  facebookLink,
+  instagramLink,
+  linkedinLink,
+  showFacebook = true,
+  showInstagram = true,
+  showLinkedin = true,
+}) => {
+  return (
+    <div className="group relative w-full h-[380px] sm:h-[420px] max-w-[340px] sm:max-w-[400px] md:max-w-[450px] mx-auto rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white">
+      <img
+        src={imageSrc}
+        alt={name || "Team Member"}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+
+      <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md rounded-xl p-3 sm:p-4 flex flex-col items-center justify-between border border-white/40 shadow-lg transition-all duration-300 group-hover:bg-white/90">
+        <div className="w-full text-center space-y-1">
+          <p className="text-slate-900 text-base sm:text-lg md:text-[20px] font-extrabold tracking-tight line-clamp-1">
+            {name}
+          </p>
+          <p className="text-slate-600 text-xs sm:text-sm md:text-[15px] font-medium line-clamp-1">
+            {text}
+          </p>
+        </div>
+
+        <div className="flex justify-center items-center gap-4 mt-3">
+          {showFacebook && facebookLink && (
+            <a
+              href={facebookLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-900 text-white hover:bg-[#1877F2] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
+              title="Facebook"
+            >
+              <FontAwesomeIcon
+                icon={faFacebook}
+                className="text-sm sm:text-base"
+              />
+            </a>
+          )}
+
+          {showInstagram && instagramLink && (
+            <a
+              href={instagramLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-900 text-white hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:to-[#ee2a7b] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
+              title="Instagram"
+            >
+              <FontAwesomeIcon
+                icon={faInstagram}
+                className="text-sm sm:text-base"
+              />
+            </a>
+          )}
+
+          {showLinkedin && linkedinLink && (
+            <a
+              href={linkedinLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-900 text-white hover:bg-[#0077B5] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
+              title="LinkedIn"
+            >
+              <FontAwesomeIcon
+                icon={faLinkedin}
+                className="text-sm sm:text-base"
+              />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Card;
