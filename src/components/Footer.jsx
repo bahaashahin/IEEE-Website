@@ -68,7 +68,7 @@ const Footer = () => {
 
       <div className="container mx-auto px-6 mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         <div className="text-center lg:text-left space-y-3">
-          <div className="inline-block bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-xl border border-white/10">
+          <div className="inline-block bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10">
             <h3 className="font-bold text-base tracking-wide text-white">
               Contact Us
             </h3>
@@ -92,12 +92,12 @@ const Footer = () => {
             <input
               type="email"
               placeholder="Enter your email address"
-              className="w-full sm:flex-1 px-4 py-3 rounded-xl border border-white/30 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10 transition text-sm font-medium"
+              className="w-full sm:flex-1 px-4 py-3 rounded-full border border-white/30 bg-white/5 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/10 transition text-sm font-medium"
               required
             />
             <button
               type="submit"
-              className="w-full sm:w-auto whitespace-nowrap bg-white text-[#05568D] font-bold px-6 py-3 rounded-xl hover:bg-blue-50 transition transform active:scale-95 text-sm shadow-md shadow-blue-900/10"
+              className="w-full sm:w-auto whitespace-nowrap bg-white text-[#05568D] font-bold px-6 py-3 rounded-full hover:bg-blue-50 transition transform active:scale-95 text-sm shadow-md shadow-blue-900/10"
             >
               Subscribe to news
             </button>
