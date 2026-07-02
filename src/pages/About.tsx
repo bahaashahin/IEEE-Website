@@ -1,5 +1,3 @@
-import Footer from "../components/Footer";
-import Section from "../components/Section";
 import firstPic from "../assets/about-img/firstpic.jpg";
 import secondPic from "../assets/about-img/2rdpic.jpg";
 import firstBox from "../assets/about-img/firstbox.svg";
@@ -7,9 +5,22 @@ import since2013 from "../assets/about-img/sence2013.svg";
 import codeBaker from "../assets/about-img/codebaker.svg";
 import workshops from "../assets/about-img/workshops.svg";
 import since2018 from "../assets/about-img/sence2018.svg";
-import CardSlider from "../components/CardSlider";
+
+import { useBoardQuery } from "../hooks";
+import { Section, CardSlider, Card } from "../components";
+import { selectMemberPosition } from "../utils/member.position";
+import { boardMember } from "../types";
 
 const About = () => {
+  const lastYear = new Date().getFullYear().toString();
+
+  const { data, isLoading, error } = useBoardQuery({
+    year: lastYear,
+    memberType: "officer",
+    position: "Chair",
+  });
+  const lastChairPerson = data?.officer ?? [];
+
   return (
     <div className="w-full overflow-hidden bg-gray-50/50">
       <Section
@@ -191,18 +202,31 @@ const About = () => {
         </div>
 
         <div className="mt-16 pt-6">
-          <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-lg sm:text-2xl font-bold gap-3 mb-8">
-            <span className="bg-red-600 text-white px-4 py-1.5 rounded-r-2xl text-sm sm:text-base tracking-wide shadow-sm">
-              Our Last Chairman
-            </span>
-            <span className="text-[#1A1A1A]">
-              The Heart of IEEE Al-Azhar SB: Talented Individuals, Shared Goals
-            </span>
-          </h2>
-          <CardSlider />
+          {isLoading && <p>Loading...</p>}
+          {error && <p className="text-red-600 font-bold">{error.message}</p>}
+
+          {/* 🚨 العرض المصحح: نتحقق من أن lastChairmen مصفوفة ونقوم بتمريرها */}
+          {!isLoading && lastChairPerson.length > 0 ? (
+            <CardSlider
+              cards={lastChairPerson.map((chairPerson: boardMember) => (
+                <Card
+                  key={chairPerson.id}
+                  name={chairPerson.name}
+                  title={selectMemberPosition(
+                    chairPerson,
+                    chairPerson.gender,
+                  )}
+                  text={chairPerson.bio}
+                  imageSrc={chairPerson.image_url}
+                  linkedinLink={chairPerson.linkedin_url}
+                />
+              ))}
+            />
+          ) : !isLoading && !error ? (
+            <p>No past chairmen data available.</p>
+          ) : null}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

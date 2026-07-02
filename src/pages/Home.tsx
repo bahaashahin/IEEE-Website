@@ -1,5 +1,11 @@
-import Footer from "../components/Footer";
-import bahaa from "../assets/about-img/bahaa.jpg";
+import { Link } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
+
+import { useBoardQuery, useEventsQuery } from "../hooks";
+import { selectMemberPosition } from "../utils/member.position";
+import { CardSlider, CardEvent, CardLogo, Card } from "../components";
+import { BoardMember } from "../types";
+
 import Logo from "../assets/logo.WebP";
 import discover from "../assets/home-img/discover.jpg";
 import pic1 from "../assets/home-img/pic-1.jpg";
@@ -7,27 +13,75 @@ import pic2 from "../assets/home-img/pic-2.jpg";
 import pic3 from "../assets/home-img/pic-3.jpg";
 import bubble1 from "../assets/section-bubles/bubble1.png";
 import bubble2 from "../assets/section-bubles/bubble2.png";
-import { Link } from "react-router-dom";
-import { FaArrowUp } from "react-icons/fa";
-import CardSlider from "../components/CardSlider";
-import CardEvent from "../components/CardEvent";
-import CardLogo from "../components/CardLogo";
-import Card from "../components/Card";
-import aiGame from "../assets/events-img/AI Game.jpg";
-import codeBaker from "../assets/events-img/Code Baker.jpg";
-import juniorCamp from "../assets/events-img/Junior Camp.jpg";
-import kickStart from "../assets/events-img/KickStart.jpg";
-import Semicolon from "../assets/events-img/The Semicolon Show.jpg";
 import multi from "../assets/home-img/multi.svg";
 import operation from "../assets/home-img/operation.svg";
 import tech from "../assets/home-img/tech.svg";
-import Esraa from "../assets/home-img/Esraa Ahmed.jpg";
-import MaiHesham from "../assets/home-img/Mai Hesham.jpeg";
-import MuhammadAbdelmoniem from "../assets/home-img/Muhammad-Abdelmoniem.jpeg";
-import AwabKamal from "../assets/home-img/Awab Kamal.jpg";
-import SarahYoussef from "../assets/home-img/Sarah Youssef.png";
+
+const committeesIntro = [
+  {
+    imageSrc: tech,
+    title: "Technical Committees",
+    description:
+      "Technical Committees focus on advancing specific technology fields, driving research, standards, and innovation.",
+  },
+  {
+    imageSrc: operation,
+    title: "Operation Committees",
+    description:
+      "Operation Committees focus on managing logistics, organizing events, and ensuring smooth execution of all activities.",
+  },
+  {
+    imageSrc: multi,
+    title: "Multi Media Committees",
+    description:
+      "Multimedia Committees focus on crafting the team's identity through creative content, design, and digital communication.",
+  },
+];
+
+const heroSection = [
+  {
+    src: pic1,
+    alt: "Team 1",
+    className:
+      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute top-0 left-[205px] lg:left-[470px] transform -translate-x-1/2 z-20",
+  },
+
+  {
+    src: pic2,
+    alt: "Team 2",
+    className:
+      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute bottom-0 left-[205px] lg:left-[350px] transform -translate-x-1/2 z-20",
+  },
+  {
+    src: pic3,
+    alt: "Team 3",
+    className:
+      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute top-1/2 left-[10px] lg:left-[0px] transform -translate-y-1/2 z-20",
+  },
+  {
+    src: bubble1,
+    alt: "bubble1",
+    className:
+      "absolute lg:bottom-[-100px] lg:right-[90px] lg:-translate-y-[20%] bottom-[120px] left-[-10px] w-[250px] sm:w-434 lg:w-[350px] rotate-[43.61deg]",
+  },
+  {
+    src: bubble2,
+    alt: "bubble2",
+    className:
+      "absolute lg:top-[200px] lg:left-[206px] lg:-translate-y-[30%] w-[250px] sm:w-[350px] lg:w-601.6 rotate-[151.52deg]",
+  },
+];
 
 const Home = () => {
+  const lastYear = new Date().getFullYear().toString();
+  const { data, isLoading, error } = useBoardQuery({
+    year: lastYear,
+    memberType: "officer",
+  });
+  const officers: BoardMember[] = data?.officer ?? [];
+
+  const { data: events } = useEventsQuery();
+
   return (
     <div className="overflow-x-hidden bg-slate-50/50">
       {/* ستايل حقن الأنميشن المخصص للعناصر العائمة بشكل متداخل لضمان العمق الاحترافي */}
@@ -107,37 +161,15 @@ const Home = () => {
           </div>
 
           <div className="relative flex justify-center items-center h-[380px] md:h-[450px] w-full max-w-[500px] mx-auto">
-            <img
-              src={bubble1}
-              alt="bubble1"
-              loading="lazy"
-              className="absolute bottom-[-10%] right-[-10%] w-[260px] md:w-[340px] opacity-40 pointer-events-none z-10 animate-bg-bubble-1"
-            />
-            <img
-              src={bubble2}
-              alt="bubble2"
-              loading="lazy"
-              className="absolute top-[10%] left-[-10%] w-[260px] md:w-[340px] opacity-40 pointer-events-none z-10 animate-bg-bubble-2"
-            />
-
-            <img
-              src={pic1}
-              alt="Team 1"
-              loading="lazy"
-              className="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[150px] md:h-[150px] lg:w-[180px] lg:h-[180px] object-cover rounded-full absolute top-[10%] right-[5%] z-20 border-4 border-white/20 shadow-2xl transition-all duration-500 hover:scale-110 animate-hero-1"
-            />
-            <img
-              src={pic2}
-              alt="Team 2"
-              loading="lazy"
-              className="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] md:w-[150px] md:h-[150px] lg:w-[180px] lg:h-[180px] object-cover rounded-full absolute bottom-[10%] left-[25%] z-20 border-4 border-white/20 shadow-2xl transition-all duration-500 hover:scale-110 animate-hero-2"
-            />
-            <img
-              src={pic3}
-              alt="Team 3"
-              loading="lazy"
-              className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] md:w-[140px] md:h-[140px] lg:w-[160px] lg:h-[160px] object-cover rounded-full absolute top-[35%] left-0 z-20 border-4 border-white/20 shadow-2xl transition-all duration-500 hover:scale-110 animate-hero-3"
-            />
+            {heroSection.map((item, index) => (
+              <img
+                key={`${index}-${item.alt}`}
+                src={item.src}
+                alt={item.alt}
+                loading="lazy"
+                className={item.className}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -177,7 +209,7 @@ const Home = () => {
               IEEE Al-Azhar SB is dependent on the{" "}
               <strong className="text-slate-900 font-semibold">
                 "IEEE Egypt Section"
-              </strong>{" "}
+              </strong>
               which was established on September 8, 1955, as the 2nd IEEE
               section outside the US, and the 2nd IEEE section in R8 (Africa,
               Europe and the Middle East). The IEEE Egypt section is supervising
@@ -212,53 +244,23 @@ const Home = () => {
 
       {/*  Events Slider Container */}
       <div className="mt-2 mb-12">
-        <CardSlider>
-          <CardEvent
-            id={1}
-            image={aiGame}
-            title="AI Game"
-            text="An event introducing the fundamentals of artificial intelligence (AI) and its applications."
-            date="29 Feb 2024"
-            location="Al-Azhar University"
-            className="grid lg:grid-cols-1 pb-6"
-          />
-          <CardEvent
-            id={2}
-            image={codeBaker}
-            title="Code Baker"
-            text="A camp offering technical and non-technical training in various fields"
-            date="End of year vacation"
-            location="Online/Offline"
-            className="grid lg:grid-cols-1 md:grid-cols-1 pb-6"
-          />
-          <CardEvent
-            id={3}
-            image={juniorCamp}
-            title="Junior Camp"
-            text="Camp designed for children and teenagers aged 5 to 18, focusing on programming and digital skills."
-            date="Mid-year vacation"
-            location="Online/Offline"
-            className="grid lg:grid-cols-1 pb-6"
-          />
-          <CardEvent
-            id={4}
-            image={kickStart}
-            title="KickStart"
-            text="Program introducing participants to computer science, programming, and tech career paths."
-            date="16, 18 Dec 2023"
-            location="Al-Azhar University"
-            className="grid lg:grid-cols-1 pb-6"
-          />
-          <CardEvent
-            id={5}
-            image={Semicolon}
-            title="The Semicolon Show"
-            text="A problem-solving competition aimed at enhancing problem-solving skills and fostering a competitive spirit."
-            date="Second Semester"
-            location="Online/Offline"
-            className="grid lg:grid-cols-1"
-          />
-        </CardSlider>
+        {events && (
+          <CardSlider
+            cards={events.map((event) => (
+              <CardEvent
+                key={event._id}
+                id={event._id}
+                image={event.coverImage?.asset?.url ?? "image not found"}
+                title={event.title}
+                text={event.subtitle ?? "subtitle not found"}
+                date={`${new Date(event.startDate).toLocaleDateString()} - ${event.endDate ? new Date(event.endDate).toLocaleDateString() : "TBD"}`}
+                location={event.location ?? "location not found"}
+              />
+            ))}
+          >
+            {/* لن تعمل بهذه الطريقة، يجب تمريرها كـ cards */}
+          </CardSlider>
+        )}
       </div>
 
       {/*  Committees Section */}
@@ -295,23 +297,18 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:w-1/2 w-full bg-slate-100/70 border border-slate-200/50 backdrop-blur-sm rounded-2xl p-6 shadow-inner">
-            <CardLogo
-              imageSrc={tech}
-              title="Technical Committees"
-              description="Technical Committees focus on advancing specific technology fields, driving research, standards, and innovation."
-            />
-            <CardLogo
-              imageSrc={operation}
-              title="Operation Committees"
-              description="Operation Committees focus on managing logistics, organizing events, and ensuring smooth execution of all activities."
-            />
-            <div className="md:col-span-2">
-              <CardLogo
-                imageSrc={multi}
-                title="Multi Media Committees"
-                description="Multimedia Committees focus on crafting the team’s identity through creative content, design, and digital communication."
-              />
-            </div>
+            {committeesIntro.map((committee, index) => (
+              <div
+                key={`${index}-${committee.title}`}
+                className={`${index % 2 === 0 && index > 0 ? "md:col-span-2" : ""}`}
+              >
+                <CardLogo
+                  imageSrc={committee.imageSrc}
+                  title={committee.title}
+                  description={committee.description}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -330,56 +327,17 @@ const Home = () => {
 
       <div className="mt-6 mb-16">
         <CardSlider
-          cards={[
+          cards={officers.map((officer) => (
             <Card
-              key="esraa"
-              title="one"
-              imageSrc={Esraa}
-              name={"Esraa Ahmed Fouda"}
-              text={"Chair lady"}
-              linkedinLink={
-                "https://www.linkedin.com/in/esraa-ahmed-fouda-b79b52238/"
-              }
-            />,
-            <Card
-              key="mai"
-              title="one"
-              imageSrc={MaiHesham}
-              name={"Mai Hesham Taha Ghoniem"}
-              text={"Vice Technical Chairwoman"}
-              linkedinLink={"https://www.linkedin.com/in/mai-hesham103"}
-            />,
-            <Card
-              key="sarah"
-              title="three"
-              imageSrc={SarahYoussef}
-              name={"Sarah Youssef Ismail"}
-              text={"Vice Branding Chairwoman"}
-              linkedinLink={
-                "https://www.linkedin.com/in/sarah-youssef-17b284225/"
-              }
-            />,
-            <Card
-              key="muhammad"
-              title="one"
-              imageSrc={MuhammadAbdelmoniem}
-              name={"Muhammad Abdulmoneim"}
-              text={"Treasurer"}
-              linkedinLink={"https://www.linkedin.com/in/muhammad-abdulmoneim/"}
-            />,
-            <Card
-              key="awab"
-              title="five"
-              imageSrc={AwabKamal}
-              name={"Awab Kamal Abd AlRahman"}
-              text={"Secretary"}
-              linkedinLink={"https://www.linkedin.com/in/awab-kamal-99845421b/"}
-            />,
-          ]}
+              imageSrc={officer.image_url}
+              name={officer.name}
+              title={`${selectMemberPosition(officer, officers[0]?.gender)}`}
+              text={officer.bio}
+              linkedinLink={officer.linkedin_url}
+            />
+          ))}
         />
       </div>
-
-      <Footer />
     </div>
   );
 };
