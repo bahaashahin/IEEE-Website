@@ -1,50 +1,27 @@
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import Card from "./Card";
 
-export default function CardSlider({ cards }) {
-  const [people, setPeople] = useState([]);
+export interface CardSliderProps {
+  cards: React.ReactNode[];
+}
 
-  useEffect(() => {
-    if (!cards || cards.length === 0) {
-      fetch("/team.json")
-        .then((res) => res.json())
-        .then((data) => setPeople(data))
-        .catch((err) => console.error("Failed to load team data", err));
-    }
-  }, [cards]);
-
+export default function CardSlider({ cards }: CardSliderProps) {
   const finalCards =
-    cards && cards.length > 0
-      ? cards.map((card, index) => (
-          <SwiperSlide key={index} className="flex justify-center px-2 py-4">
-            <div className="w-full max-w-[420px] md:max-w-[450px] mb-14">
-              {card}
-            </div>
-          </SwiperSlide>
-        ))
-      : people.map((person, index) => (
-          <SwiperSlide key={index} className="flex justify-center px-2 py-4">
-            <div className="w-full max-w-[420px] md:max-w-[450px] mb-14">
-              <Card
-                title={person.title}
-                imageSrc={`/images/people/${person.image}`}
-                name={person.name}
-                text={person.text}
-                linkedinLink={person.linkedinLink}
-                facebookLink={person.facebookLink}
-                instagramLink={person.instagramLink}
-              />
-            </div>
-          </SwiperSlide>
-        ));
+    cards &&
+    cards.length > 0 &&
+    cards.map((card, index) => (
+      <SwiperSlide key={index} className="flex justify-center px-2 py-4">
+        <div className="w-full max-w-[420px] md:max-w-[450px] mb-14">
+          {card}
+        </div>
+      </SwiperSlide>
+    ));
 
   return (
-    <div className="w-full px-4 md:px-10 py-4 relative group/slider">
+    <div className="w-full mx-auto relative group/slider">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         centeredSlides={true}
@@ -70,12 +47,12 @@ export default function CardSlider({ cards }) {
             spaceBetween: 30,
           },
         }}
-        className="relative px-4"
+        className="relative mx-auto px-4"
       >
         {finalCards}
       </Swiper>
 
-      <style jsx global>{`
+      <style>{`
         /* تأثير الزوم والشفافية للكارت النشط (Active Card Effect) */
         .swiper-slide {
           opacity: 0.4;

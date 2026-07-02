@@ -3,7 +3,19 @@ import bubble2 from "../assets/section-bubles/bubble2.png";
 import Logo from "../assets/logo.WebP";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
-const Section = ({ text, additionalText, showSocialIcons, showIeeeBox }) => {
+export interface SectionProps {
+  text: string;
+  additionalText?: string;
+  showSocialIcons?: boolean;
+  showIeeeBox?: boolean;
+}
+
+const Section = ({
+  text,
+  additionalText,
+  showSocialIcons,
+  showIeeeBox,
+}: SectionProps) => {
   return (
     <div
       className="text-white min-h-[350px] md:min-h-[400px] w-full flex items-center justify-center relative overflow-hidden py-16 md:py-12"
