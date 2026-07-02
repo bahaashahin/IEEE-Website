@@ -1,8 +1,25 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { FaCalendarAlt, FaMapMarkerAlt, FaArrowUp } from "react-icons/fa";
 
-const Card = ({ image, title, text, date, location, className, id }) => {
+export interface CardProps {
+  image: string;
+  title: string;
+  text: string;
+  date: string;
+  location: string;
+  className?: string;
+  id?: string;
+}
+
+const Card = ({
+  image,
+  title,
+  text,
+  date,
+  location,
+  className,
+  id,
+}: CardProps) => {
   return (
     <div
       className={`group w-full max-w-[650px] bg-white shadow-md hover:shadow-xl rounded-2xl p-4 md:p-5 flex flex-col gap-5 mx-auto transition-all duration-300 hover:-translate-y-1 ${className}`}

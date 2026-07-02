@@ -1,4 +1,3 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -6,19 +5,27 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 
-const Card = ({
+export interface CardProps {
+  imageSrc: string;
+  name: string;
+  title: string;
+  text: string;
+  facebookLink?: string;
+  instagramLink?: string;
+  linkedinLink?: string;
+}
+
+const CardMember = ({
   imageSrc,
   name,
+  title,
   text,
   facebookLink,
   instagramLink,
   linkedinLink,
-  showFacebook = true,
-  showInstagram = true,
-  showLinkedin = true,
-}) => {
+}: CardProps) => {
   return (
-    <div className="group relative w-full h-[380px] sm:h-[420px] max-w-[340px] sm:max-w-[400px] md:max-w-[450px] mx-auto rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white">
+    <div className="group relative w-full h-[380px] sm:h-[520px] max-w-[340px] sm:max-w-[400px] md:max-w-[450px] mx-auto rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white">
       <img
         src={imageSrc}
         alt={name || "Team Member"}
@@ -29,7 +36,7 @@ const Card = ({
       <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md rounded-xl p-3 sm:p-4 flex flex-col items-center justify-between border border-white/40 shadow-lg transition-all duration-300 group-hover:bg-white/90">
         <div className="w-full text-center space-y-1">
           <p className="text-slate-900 text-base sm:text-lg md:text-[20px] font-extrabold tracking-tight line-clamp-1">
-            {name}
+            {name} - {title}
           </p>
           <p className="text-slate-600 text-xs sm:text-sm md:text-[15px] font-medium line-clamp-1">
             {text}
@@ -37,7 +44,7 @@ const Card = ({
         </div>
 
         <div className="flex justify-center items-center gap-4 mt-3">
-          {showFacebook && facebookLink && (
+          {facebookLink && (
             <a
               href={facebookLink}
               target="_blank"
@@ -52,7 +59,7 @@ const Card = ({
             </a>
           )}
 
-          {showInstagram && instagramLink && (
+          {instagramLink && (
             <a
               href={instagramLink}
               target="_blank"
@@ -67,7 +74,7 @@ const Card = ({
             </a>
           )}
 
-          {showLinkedin && linkedinLink && (
+          {linkedinLink && (
             <a
               href={linkedinLink}
               target="_blank"
@@ -87,4 +94,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default CardMember;
