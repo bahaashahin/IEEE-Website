@@ -19,9 +19,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   if (!sessionData?.session) {
     return <Navigate to="/login" replace />;
   }
-
-  console.log(isPending, error, sessionData, "protected route");
-
   return <>{children}</>;
 };
 

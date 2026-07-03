@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar.jsx";
-import Home from "./pages/Home.jsx";
-import About from "./pages/About";
-import Events from "./pages/Events";
-import EventDetails from "./pages/EventDetails.jsx";
-import Committees from "./pages/Committees";
-import Board from "./pages/Board";
-import ContactUs from "./pages/ContactUs";
-import JoinUs from "./pages/JoinUs";
-import ScrollToTop from "./components/ScrollToTop.jsx";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { Footer, Navbar, ProtectedRoute, ScrollToTop } from "./components";
+import {
+  Home,
+  About,
+  Events,
+  EventDetails,
+  Committees,
+  Board,
+  ContactUs,
+  JoinUs,
+  Login,
+  Dashboard,
+} from "./pages";
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
                 <Route path="/contactus" element={<ContactUs />} />
                 <Route path="/joinus" element={<JoinUs />} />
               </Routes>
+              <Footer />
             </>
           }
         />
