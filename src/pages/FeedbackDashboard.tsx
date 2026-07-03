@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   MessageSquare,
   Trash2,
@@ -9,79 +9,67 @@ import {
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
+import { useFeedbackQuery } from "../hooks/queries/useFeedbackQuery";
+import {
+  useUpdateFeedbackStatus,
+  useDeleteFeedback,
+} from "../hooks/mutations/useFeedbackMutations";
+import { FeedbackCardSkeleton, ErrorBanner } from "../components";
+import { useSession } from "../lib/auth-client";
 
-const initialFeedbacks = [
-  {
-    id: "1",
-    name: "Mohamed El-Sayed",
-    email: "mohamed.dev@gmail.com",
-    subject: "Suggestion for Web Dev Workshop",
-    message:
-      "Hello team, I would highly suggest introducing advanced tracks like Next.js or Remix in the upcoming web development workshops. The basics were great!",
-    date: "2026-06-29",
-    status: "New",
-  },
-  {
-    id: "2",
-    name: "Yasmine Amr",
-    email: "yasmine.amr@outlook.com",
-    subject: "Inquiry about Membership",
-    message:
-      "When will the next mid-season recruitment open? I missed the first phase and really want to join the PR committee.",
-    date: "2026-06-28",
-    status: "Read",
-  },
-  {
-    id: "3",
-    name: "Kareem Tarek",
-    email: "kareem99@azhar.edu.eg",
-    subject: "Compliment regarding Mega Event",
-    message:
-      "The coordination and the topics covered in the last tech week were extraordinary. Hats off to the High Board and organizing committees!",
-    date: "2026-06-25",
-    status: "Read",
-  },
-];
+type FeedbackStatus = "New" | "Read";
+type FeedbackFilter = "All" | FeedbackStatus;
 
 function FeedbackDashboard() {
-  const [feedbacks, setFeedbacks] = useState(initialFeedbacks);
-  const [statusFilter, setStatusFilter] = useState("All");
+  const { data: sessionData } = useSession();
 
-  // حالات مودال الحذف
+  const [statusFilter, setStatusFilter] = useState<FeedbackFilter>("All");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [feedbackIdToDelete, setFeedbackIdToDelete] = useState(null);
+  const [feedbackIdToDelete, setFeedbackIdToDelete] = useState<string | null>(
+    null
+  );
 
-  // فتح مودال التأكيد
-  const triggerDeleteModal = (id) => {
+  const {
+    data: feedbacks = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useFeedbackQuery();
+
+  const { mutate: updateStatus } = useUpdateFeedbackStatus();
+  const { mutate: deleteFeedback } = useDeleteFeedback();
+
+  const triggerDeleteModal = (id: string) => {
     setFeedbackIdToDelete(id);
     setIsDeleteModalOpen(true);
   };
 
-  // تأكيد الحذف
   const confirmDelete = () => {
-    setFeedbacks(feedbacks.filter((fb) => fb.id !== feedbackIdToDelete));
+    if (feedbackIdToDelete === null) {
+      return;
+    }
+
+    deleteFeedback({ id: feedbackIdToDelete });
     setIsDeleteModalOpen(false);
     setFeedbackIdToDelete(null);
   };
 
-  // تغيير حالة الرسائل (مقروء / جديد)
-  const toggleStatus = (id) => {
-    setFeedbacks(
-      feedbacks.map((fb) =>
-        fb.id === id
-          ? { ...fb, status: fb.status === "New" ? "Read" : "New" }
-          : fb,
-      ),
-    );
+  const toggleStatus = (id: string, currentStatus: string) => {
+    updateStatus({
+      id,
+      status: currentStatus === "New" ? "Read" : "New",
+    });
   };
 
-  const filteredFeedbacks = feedbacks.filter((fb) => {
-    return statusFilter === "All" || fb.status === statusFilter;
-  });
+  const filteredFeedbacks = Array.isArray(feedbacks)
+    ? feedbacks.filter((fb: any) => {
+        return statusFilter === "All" || fb.status === statusFilter;
+      })
+    : [];
 
   return (
     <main className="p-4 md:p-10 max-w-7xl mx-auto w-full space-y-8 animate-in fade-in duration-200">
-      {/* 📋 الهيدر */}
       <header className="pb-4 border-b border-slate-800">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
           <MessageSquare className="text-blue-500" size={28} /> Users Feedback
@@ -92,7 +80,6 @@ function FeedbackDashboard() {
         </p>
       </header>
 
-      {/* 📊 بطاقات إحصائيات سريعة للفيدباك */}
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-5">
         <div className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4">
           <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
@@ -103,7 +90,7 @@ function FeedbackDashboard() {
               Total Feedbacks
             </span>
             <span className="text-2xl font-bold text-white">
-              {feedbacks.length}
+              {feedbacks.length || 0}
             </span>
           </div>
         </div>
@@ -114,7 +101,7 @@ function FeedbackDashboard() {
           <div>
             <span className="text-xs text-slate-400 block">Unread / New</span>
             <span className="text-2xl font-bold text-white">
-              {feedbacks.filter((f) => f.status === "New").length}
+              {feedbacks.filter((f: any) => f.status === "New").length || 0}
             </span>
           </div>
         </div>
@@ -127,13 +114,12 @@ function FeedbackDashboard() {
               Processed / Read
             </span>
             <span className="text-2xl font-bold text-white">
-              {feedbacks.filter((f) => f.status === "Read").length}
+              {feedbacks.filter((f: any) => f.status === "Read").length || 0}
             </span>
           </div>
         </div>
       </section>
 
-      {/* 🔍 أدوات الفلترة */}
       <section className="bg-[#1E293B] p-4 rounded-2xl border border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <div className="flex items-center gap-2 text-sm text-slate-400">
@@ -141,7 +127,7 @@ function FeedbackDashboard() {
           </div>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={(e) => setStatusFilter(e.target.value as FeedbackFilter)}
             className="bg-[#0F172A] border border-slate-600 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-blue-500 w-full sm:w-auto"
           >
             <option value="All">All Feedbacks</option>
@@ -154,23 +140,34 @@ function FeedbackDashboard() {
         </span>
       </section>
 
-      {/* 📥 صندوق الرسائل المتجاوب */}
+      {isError && (
+        <ErrorBanner
+          message={error?.message || "Failed to load feedbacks."}
+          onRetry={refetch}
+        />
+      )}
+
       <section className="space-y-4">
-        {filteredFeedbacks.length === 0 ? (
+        {isLoading ? (
+          <>
+            <FeedbackCardSkeleton />
+            <FeedbackCardSkeleton />
+            <FeedbackCardSkeleton />
+          </>
+        ) : filteredFeedbacks.length === 0 ? (
           <div className="bg-[#1E293B] rounded-2xl p-12 text-center border border-slate-800 text-slate-500">
             No feedback found matching the criteria.
           </div>
         ) : (
-          filteredFeedbacks.map((fb) => (
+          filteredFeedbacks.map((fb: any) => (
             <div
-              key={fb.id}
+              key={fb._id || fb.id}
               className={`p-5 rounded-2xl border transition flex flex-col gap-4 ${
                 fb.status === "New"
                   ? "bg-[#1E293B] border-blue-500/30 shadow-md shadow-blue-500/5"
                   : "bg-[#1E293B]/60 border-slate-800"
               }`}
             >
-              {/* بيانات الراسل العلوية */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-700/40">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -190,26 +187,25 @@ function FeedbackDashboard() {
 
                 <div className="flex items-center gap-3 text-xs text-slate-400 self-end sm:self-auto">
                   <span className="flex items-center gap-1">
-                    <Clock size={12} /> {fb.date}
+                    <Clock size={12} />{" "}
+                    {new Date(fb.createdAt || fb.date).toLocaleDateString()}
                   </span>
                 </div>
               </div>
 
-              {/* متن الرسالة وعنوانها */}
               <div>
                 <h4 className="text-sm font-semibold text-slate-200 mb-1.5">
                   Subject:{" "}
-                  <span className="text-white font-medium">{fb.subject}</span>
+                  <span className="text-white font-medium">{fb.subject || "No Subject"}</span>
                 </h4>
                 <p className="text-slate-300 text-sm leading-relaxed bg-[#0F172A]/40 p-4 rounded-xl border border-slate-800/80 whitespace-pre-line">
                   {fb.message}
                 </p>
               </div>
 
-              {/* أزرار الإجراءات للرسالة */}
               <div className="flex justify-end items-center gap-2 pt-1">
                 <button
-                  onClick={() => toggleStatus(fb.id)}
+                  onClick={() => toggleStatus(fb._id || fb.id, fb.status)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
                     fb.status === "New"
                       ? "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-600"
@@ -219,7 +215,7 @@ function FeedbackDashboard() {
                   {fb.status === "New" ? "Mark as Read" : "Mark as New"}
                 </button>
                 <button
-                  onClick={() => triggerDeleteModal(fb.id)}
+                  onClick={() => triggerDeleteModal(fb._id || fb.id)}
                   className="p-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition border border-red-500/10"
                   title="Delete message"
                 >
@@ -231,7 +227,6 @@ function FeedbackDashboard() {
         )}
       </section>
 
-      {/* ⚠️ مودال تأكيد حذف الرسالة */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
           <div className="bg-[#1E293B] border border-slate-700 rounded-2xl w-full max-w-sm p-6 shadow-2xl text-center animate-in fade-in zoom-in-95 duration-150">
