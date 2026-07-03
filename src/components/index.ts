@@ -8,5 +8,7 @@ export { default as Navbar } from "./Navbar";
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as ScrollToTop } from "./ScrollToTop";
 export { default as Section } from "./Section";
+export * from "./ErrorBanner";
+export * from "./Skeletons";
 export { default as SideBarContent } from "./SideBarContent";
 
