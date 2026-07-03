@@ -4,21 +4,35 @@ import { queryKeys } from "../../lib/queryKeys";
 
 interface UseBoardQueryParams {
   year: string;
-  memberType: string;
+  yearTo?: string;
+  memberType: string | string[];
   position?: string;
+  track?: string;
   enabled?: boolean;
 }
 
 export const useBoardQuery = ({
   year,
+  yearTo = year,
   memberType,
   position,
+  track,
   enabled = true,
 }: UseBoardQueryParams) => {
+  const yf = `${year}`;
+  const yt = yearTo == null ? undefined : String(yearTo);
   return useQuery({
-    queryKey: queryKeys.board.byYearAndType(year, memberType, position),
+    queryKey: queryKeys.board.byYearAndType(yf, yt, memberType, position),
     queryFn: () =>
-      fetchBoard({ yearFrom: year, yearTo: year, memberType, position }),
-    enabled: enabled && !!year,
+      fetchBoard({
+        yearFrom: yf,
+        yearTo: yt,
+        memberType: Array.isArray(memberType)
+          ? memberType.join(",")
+          : String(memberType),
+        position,
+        track,
+      }),
+    enabled: enabled && !!yf,
   });
 };
