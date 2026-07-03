@@ -1,4 +1,4 @@
-const API_BASE = "https://ieee-alazhar-api.vercel.app";
+const API_BASE = import.meta.env.VITE_BETTER_AUTH_CLIENT;
 
 export interface FeedbackPayload {
   name: string;
@@ -18,5 +18,46 @@ export const submitFeedback = async (payload: FeedbackPayload) => {
     throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   }
 
+  return res.json();
+};
+
+export const getFeedbacks = async () => {
+  const res = await fetch(`${API_BASE}/api/v1/feedback`, {
+    credentials: "include"
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  const json = await res.json();
+  return json.data ?? json;
+};
+
+export const updateFeedbackStatus = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: string;
+}) => {
+  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  return res.json();
+};
+
+export const deleteFeedback = async ({
+  id,
+}: {
+  id: string;
+}) => {
+  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   return res.json();
 };
