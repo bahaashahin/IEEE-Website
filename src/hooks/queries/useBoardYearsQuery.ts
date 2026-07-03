@@ -6,6 +6,6 @@ export const useBoardYearsQuery = () => {
   return useQuery({
     queryKey: queryKeys.boardYears.all,
     queryFn: fetchBoardYears,
-    staleTime: 1000 * 60 * 30, // years list barely changes
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 };

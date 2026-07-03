@@ -5,3 +5,4 @@ export { useEventsQuery } from "./queries/useEventsQuery";
 export { useEventByIdQuery } from "./queries/useEventByIdQuery";
 
 export { useFeedbackMutation } from "./mutations/useFeedbackMutation";
+export { useFeedbackQuery } from "./queries/useFeedbackQuery";
