@@ -1,8 +1,9 @@
 import { useState, type SubmitEvent } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
-import { ShieldCheck, Menu, Plus } from "lucide-react";
+import { GoPlus } from "react-icons/go";
+import { LuShieldCheck, LuMenu } from "react-icons/lu";
 
-import FeedbackDashboard from "./FeedbackDashboard";
+import { FeedbackDashboard } from "../pages";
 import { SideBarContent } from "../components";
 import { signOut } from "../lib/auth-client";
 import {
@@ -197,14 +198,14 @@ function Dashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="md:hidden flex items-center justify-between p-4 bg-[#1E293B] border-b border-slate-700/50">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="text-blue-500" size={20} />
+            <LuShieldCheck className="text-blue-500" size={20} />
             <span className="font-bold text-xs text-white">IEEE Panel</span>
           </div>
           <button
             className="p-2 text-slate-400 hover:text-white bg-[#0F172A] rounded-lg"
             onClick={() => setIsMobileMenuOpen(true)}
           >
-            <Menu size={20} />
+            <LuMenu size={20} />
           </button>
         </div>
 
@@ -228,7 +229,7 @@ function Dashboard() {
                       onClick={openAddModal}
                       className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg shadow-blue-500/10 transition flex items-center justify-center gap-2 text-sm self-start sm:self-auto"
                     >
-                      <Plus size={16} /> Add Member
+                      <GoPlus size={16} /> Add Member
                     </button>
                   </header>
 

@@ -1,5 +1,7 @@
 import { useEffect, useState, type ChangeEvent, type SubmitEvent } from "react";
-import { Eye, EyeOff, Lock, Mail, ArrowLeft } from "lucide-react";
+import { CgLock } from "react-icons/cg";
+import { LuMail, LuArrowLeft } from "react-icons/lu";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn, useSession } from "../lib/auth-client";
 
@@ -69,7 +71,7 @@ function Login() {
           to="/"
           className="flex items-center gap-2 text-white/80 hover:text-white transition w-max z-10 font-medium text-sm"
         >
-          <ArrowLeft size={16} />
+          <LuArrowLeft size={16} />
           Back to Homepage
         </Link>
 
@@ -115,7 +117,7 @@ function Login() {
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                  <Mail size={18} />
+                  <LuMail size={18} />
                 </span>
                 <input
                   id="email"
@@ -139,7 +141,7 @@ function Login() {
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                  <Lock size={18} />
+                  <CgLock size={18} />
                 </span>
                 <input
                   id="password"
@@ -156,7 +158,11 @@ function Login() {
                   onClick={togglePasswordVisibility}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-200 transition"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <HiOutlineEyeOff size={18} />
+                  ) : (
+                    <HiOutlineEye size={18} />
+                  )}
                 </button>
               </div>
             </div>
