@@ -1,4 +1,4 @@
-import { Menu, X } from "lucide-react";
+import { FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
@@ -49,7 +49,7 @@ const Navbar = () => {
 
             <Link
               to="/login"
-              className={`text-xs ml-2 px-3 py-1.5 rounded-full transition-all duration-300 border border-transparent 
+              className={`text-xs ml-2 px-3 py-1.5 rounded-full transition-all duration-300 border border-transparent
       ${
         isActive("/login")
           ? "bg-red-500 text-white font-bold"
@@ -76,7 +76,7 @@ const Navbar = () => {
               className="p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white focus:outline-none transition active:scale-95"
               aria-label="Open Menu"
             >
-              <Menu size={24} />
+              <FiMenu size={24} />
             </button>
           </div>
         </div>
@@ -90,8 +90,7 @@ const Navbar = () => {
       )}
 
       <div
-        className={`fixed top-0 right-0 h-screen w-[280px] max-w-[85vw] bg-[#0F3063] border-l border-white/10 shadow-2xl flex flex-col justify-between p-6 transition-transform duration-300 ease-in-out z-[9999999] 
-        ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-screen w-[280px] max-w-[85vw] bg-[#0F3063] border-l border-white/10 shadow-2xl flex flex-col justify-between p-6 transition-transform duration-300 ease-in-out z-[9999999] ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div>
           <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
@@ -104,7 +103,7 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
               className="p-1.5 rounded-lg bg-white/5 border border-white/10 text-white hover:bg-white/10 transition"
             >
-              <X size={20} />
+              <FiX size={20} />
             </button>
           </div>
 

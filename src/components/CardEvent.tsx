@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaCalendarAlt, FaMapMarkerAlt, FaArrowUp } from "react-icons/fa";
 
-export interface CardProps {
+interface CardProps {
   image: string;
   title: string;
   text: string;

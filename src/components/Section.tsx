@@ -3,7 +3,7 @@ import bubble2 from "../assets/section-bubles/bubble2.png";
 import Logo from "../assets/logo.WebP";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
-export interface SectionProps {
+interface SectionProps {
   text: string;
   additionalText?: string;
   showSocialIcons?: boolean;

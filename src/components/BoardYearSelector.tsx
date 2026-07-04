@@ -1,5 +1,5 @@
 import { useEffect, type JSX } from "react";
-import { useBoardYearsQuery } from "../hooks/queries/useBoardYearsQuery";
+import { useBoardYearsQuery } from "../hooks";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
