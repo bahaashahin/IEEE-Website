@@ -1,4 +1,4 @@
-import { Clock, Mail, Trash2, User } from "lucide-react";
+import { LuClock3, LuMail, LuTrash2, LuUser } from "react-icons/lu";
 import { FeedbackItem, FeedbackStatus } from "../hooks/useFeedbackManager";
 
 interface FeedbackCardProps {
@@ -27,7 +27,7 @@ const FeedbackCard = ({
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-white text-base flex items-center gap-1.5">
-              <User size={14} className="text-slate-400" /> {feedback.name}
+              <LuUser size={14} className="text-slate-400" /> {feedback.name}
             </span>
             {isUnread && (
               <span className="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-blue-500 text-white rounded-full animate-pulse">
@@ -36,7 +36,7 @@ const FeedbackCard = ({
             )}
           </div>
           <div className="text-xs text-slate-400 flex items-center gap-1.5">
-            <Mail size={12} /> {feedback.email}
+            <LuMail size={12} /> {feedback.email}
           </div>
           {feedback.phone && (
             <div className="text-xs text-slate-500">
@@ -47,8 +47,10 @@ const FeedbackCard = ({
 
         <div className="flex items-center gap-3 text-xs text-slate-400 self-end sm:self-auto">
           <span className="flex items-center gap-1">
-            <Clock size={12} />
-            {new Date(feedback.createdAt || feedback.date || "").toLocaleDateString()}
+            <LuClock3 size={12} />
+            {new Date(
+              feedback.createdAt || feedback.date || "",
+            ).toLocaleDateString()}
           </span>
         </div>
       </div>
@@ -56,7 +58,9 @@ const FeedbackCard = ({
       <div>
         <h4 className="text-sm font-semibold text-slate-200 mb-1.5">
           Subject:{" "}
-          <span className="text-white font-medium">{feedback.subject || "No Subject"}</span>
+          <span className="text-white font-medium">
+            {feedback.subject || "No Subject"}
+          </span>
         </h4>
         <p className="text-slate-300 text-sm leading-relaxed bg-[#0F172A]/40 p-4 rounded-xl border border-slate-800/80 whitespace-pre-line">
           {feedback.message}
@@ -83,7 +87,7 @@ const FeedbackCard = ({
           className="p-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition border border-red-500/10"
           title="Delete message"
         >
-          <Trash2 size={16} />
+          <LuTrash2 size={16} />
         </button>
       </div>
     </div>

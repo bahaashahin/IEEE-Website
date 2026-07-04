@@ -1,4 +1,6 @@
-import { AlertTriangle, CheckCircle, Filter, MessageSquare } from "lucide-react";
+import { TbAlertTriangle } from "react-icons/tb";
+import { FiCheckCircle } from "react-icons/fi";
+import { LuFilter, LuMessageSquare } from "react-icons/lu";
 
 interface FeedbackStatsRowProps {
   totalCount: number;
@@ -19,7 +21,7 @@ const FeedbackStatsRow = ({
     <section className="grid grid-cols-1 sm:grid-cols-4 gap-5">
       <div className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4">
         <div className="p-3 bg-blue-500/10 text-blue-400 rounded-xl">
-          <MessageSquare size={24} />
+          <LuMessageSquare size={24} />
         </div>
         <div>
           <span className="text-xs text-slate-400 block">Total Feedbacks</span>
@@ -29,7 +31,7 @@ const FeedbackStatsRow = ({
 
       <div className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4">
         <div className="p-3 bg-rose-500/10 text-rose-400 rounded-xl">
-          <AlertTriangle size={24} />
+          <TbAlertTriangle size={24} />
         </div>
         <div>
           <span className="text-xs text-slate-400 block">Unread</span>
@@ -39,7 +41,7 @@ const FeedbackStatsRow = ({
 
       <div className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4">
         <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
-          <CheckCircle size={24} />
+          <FiCheckCircle size={24} />
         </div>
         <div>
           <span className="text-xs text-slate-400 block">Resolved</span>
@@ -49,10 +51,12 @@ const FeedbackStatsRow = ({
 
       <div className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4">
         <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl">
-          <Filter size={24} />
+          <LuFilter size={24} />
         </div>
         <div>
-          <span className="text-xs text-slate-400 block">Filtered ({filterLabel})</span>
+          <span className="text-xs text-slate-400 block">
+            Filtered ({filterLabel})
+          </span>
           <span className="text-2xl font-bold text-white">{filterCount}</span>
         </div>
       </div>

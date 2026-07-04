@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useFeedbackQuery } from "../../../hooks/queries/useFeedbackQuery";
+import { useFeedbackQuery } from "../../../hooks";
 import {
   useUpdateFeedbackStatus,
   useDeleteFeedback,
