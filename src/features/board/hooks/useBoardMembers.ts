@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { useBoardQuery } from "../../../hooks/queries/useBoardQuery";
-import { useBoardYearsQuery } from "../../../hooks/queries/useBoardYearsQuery";
+import { useBoardYearsQuery } from "../../../hooks";
 import {
 	useCreateBoardMember,
 	useUpdateBoardMember,
 	useDeleteBoardMember,
 } from "../../../hooks/mutations/useBoardMutations";
 
-export type BoardMemberType =
+type BoardMemberType =
 	| "officer"
 	| "branding"
 	| "technical"

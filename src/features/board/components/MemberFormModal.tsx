@@ -1,6 +1,7 @@
-import { Image as ImageIcon, X } from "lucide-react";
+import { FiImage, FiX } from "react-icons/fi";
+
 import type { SubmitEvent, ChangeEvent } from "react";
-import { BoardMember, CurrentMemberFormState } from "../hooks/useBoardMembers";
+import { CurrentMemberFormState } from "../hooks/useBoardMembers";
 
 interface MemberFormModalProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ const MemberFormModal = ({
             {isEditing ? "Edit Board Member" : "Add New Council Member"}
           </h3>
           <button onClick={onClose} className="text-slate-400 hover:text-white">
-            <X size={20} />
+            <FiX size={20} />
           </button>
         </div>
 
@@ -228,7 +229,7 @@ const MemberFormModal = ({
               className="border border-dashed border-slate-600 rounded-xl p-4 text-center cursor-pointer text-xs text-slate-300 flex flex-col items-center justify-center gap-2 bg-[#0F172A] hover:bg-slate-800 transition"
               onClick={() => document.getElementById("file-input")?.click()}
             >
-              <ImageIcon size={24} className="text-slate-500" />
+              <FiImage size={24} className="text-slate-500" />
               <span>
                 {selectedFile
                   ? selectedFile.name
