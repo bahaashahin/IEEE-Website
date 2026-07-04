@@ -1,12 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateFeedbackStatus, deleteFeedback } from "../../service/feedback";
+import { updateFeedbackStatus, deleteFeedback, FeedbackItem } from "../../service/feedback";
 import { queryKeys } from "../../lib/queryKeys";
 
-interface FeedbackItem {
-  id: string;
-  status: string;
-  [key: string]: any;
-}
 
 export const useUpdateFeedbackStatus = () => {
   const queryClient = useQueryClient();
@@ -23,7 +18,9 @@ export const useUpdateFeedbackStatus = () => {
         queryClient.setQueryData<FeedbackItem[]>(
           queryKeys.feedback.all,
           (old) =>
-            old?.map((fb) => (fb.id === id ? { ...fb, status } : fb)) ?? []
+            old?.map((fb) =>
+              (fb.id ?? fb._id) === id ? { ...fb, status } : fb
+            ) ?? []
         );
       }
       return { previousFeedbacks };
@@ -56,7 +53,7 @@ export const useDeleteFeedback = () => {
       if (previousFeedbacks) {
         queryClient.setQueryData<FeedbackItem[]>(
           queryKeys.feedback.all,
-          (old) => old?.filter((fb) => fb.id !== id) ?? []
+          (old) => old?.filter((fb) => (fb.id ?? fb._id) !== id) ?? []
         );
       }
       return { previousFeedbacks };
