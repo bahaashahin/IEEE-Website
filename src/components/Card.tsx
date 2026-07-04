@@ -1,11 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-  faInstagram,
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
-export interface CardProps {
+interface CardProps {
   imageSrc: string;
   name: string;
   title: string;
@@ -52,10 +47,7 @@ const CardMember = ({
               className="bg-slate-900 text-white hover:bg-[#1877F2] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
               title="Facebook"
             >
-              <FontAwesomeIcon
-                icon={faFacebook}
-                className="text-sm sm:text-base"
-              />
+              <FaFacebookF className="text-sm sm:text-base" />
             </a>
           )}
 
@@ -67,10 +59,7 @@ const CardMember = ({
               className="bg-slate-900 text-white hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:to-[#ee2a7b] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
               title="Instagram"
             >
-              <FontAwesomeIcon
-                icon={faInstagram}
-                className="text-sm sm:text-base"
-              />
+              <FaInstagram className="text-sm sm:text-base" />
             </a>
           )}
 
@@ -82,10 +71,7 @@ const CardMember = ({
               className="bg-slate-900 text-white hover:bg-[#0077B5] rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all duration-300 transform hover:scale-110 shadow-sm"
               title="LinkedIn"
             >
-              <FontAwesomeIcon
-                icon={faLinkedin}
-                className="text-sm sm:text-base"
-              />
+              <FaLinkedinIn className="text-sm sm:text-base" />
             </a>
           )}
         </div>
