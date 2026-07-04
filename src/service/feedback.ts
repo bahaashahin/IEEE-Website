@@ -21,13 +21,28 @@ export const submitFeedback = async (payload: FeedbackPayload) => {
   return res.json();
 };
 
-export const getFeedbacks = async () => {
+export type FeedbackStatus = "unread" | "read" | "archived" | "resolved";
+
+export interface FeedbackItem {
+  id: string;
+  _id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+  status: FeedbackStatus;
+  createdAt: string;
+  date?: string;
+}
+
+export const getFeedbacks = async (): Promise<FeedbackItem[]> => {
   const res = await fetch(`${API_BASE}/api/v1/feedback`, {
     credentials: "include"
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const json = await res.json();
-  return json.data ?? json;
+  return (json.data ?? json) as FeedbackItem[];
 };
 
 export const updateFeedbackStatus = async ({
@@ -37,7 +52,7 @@ export const updateFeedbackStatus = async ({
   id: string;
   status: string;
 }) => {
-  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}`, {
+  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}/status`, {
     method: "PATCH",
     credentials: "include",
     headers: {
