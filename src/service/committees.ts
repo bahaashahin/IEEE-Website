@@ -1,6 +1,6 @@
 import { sanityClient } from "../lib/sanity/client";
 
-export interface Committee {
+interface Committee {
   _id: string;
   name: string;
   type: string;
