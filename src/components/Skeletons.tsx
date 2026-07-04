@@ -53,3 +53,30 @@ export const FeedbackCardSkeleton = () => {
     </div>
   );
 };
+
+export const FeedbackStatsRowSkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-4 gap-5 animate-pulse">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <div
+        key={i}
+        className="bg-[#1E293B] p-5 rounded-2xl border border-slate-700/50 flex items-center gap-4"
+      >
+        <div className="p-3 bg-slate-700/30 rounded-xl w-12 h-12 shrink-0" />
+        <div className="space-y-2 flex-1">
+          <div className="h-3 bg-slate-700/50 rounded w-20" />
+          <div className="h-7 bg-slate-700/50 rounded w-10" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+export const FeedbackFilterBarSkeleton = () => (
+  <div className="bg-[#1E293B] p-4 rounded-2xl border border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-pulse">
+    <div className="flex items-center gap-3">
+      <div className="h-4 bg-slate-700/50 rounded w-16" />
+      <div className="h-8 bg-slate-700/50 rounded-xl w-36" />
+    </div>
+    <div className="h-4 bg-slate-700/50 rounded w-28" />
+  </div>
+);
