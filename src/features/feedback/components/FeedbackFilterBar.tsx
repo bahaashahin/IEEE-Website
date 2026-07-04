@@ -1,4 +1,4 @@
-import { Filter } from "lucide-react";
+import { LuFilter } from "react-icons/lu";
 import { FeedbackFilter } from "../hooks/useFeedbackManager";
 
 interface FeedbackFilterBarProps {
@@ -16,7 +16,7 @@ const FeedbackFilterBar = ({
     <section className="bg-[#1E293B] p-4 rounded-2xl border border-slate-700/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div className="flex items-center gap-3 w-full sm:w-auto">
         <div className="flex items-center gap-2 text-sm text-slate-400">
-          <Filter size={16} /> Status:
+          <LuFilter size={16} /> Status:
         </div>
         <select
           value={statusFilter}
