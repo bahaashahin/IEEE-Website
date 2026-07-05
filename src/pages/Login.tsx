@@ -187,7 +187,7 @@ function Login() {
               to="/"
               className="text-xs text-blue-400 hover:underline inline-flex items-center gap-1"
             >
-              <ArrowLeft size={12} /> Back to Homepage
+              <LuArrowLeft size={12} /> Back to Homepage
             </Link>
           </div>
         </div>
