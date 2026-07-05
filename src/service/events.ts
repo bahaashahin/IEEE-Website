@@ -1,4 +1,4 @@
-import { sanityClient } from "../lib/sanity/client";
+const API_BASE = import.meta.env.VITE_BETTER_AUTH_CLIENT;
 
 interface Speaker {
   name: string;
@@ -25,26 +25,17 @@ export interface SanityEvent {
 }
 
 export const getEvents = async (): Promise<SanityEvent[]> => {
-  return sanityClient.fetch(`
-    *[_type == "event"] | order(startDate desc) {
-      _id, title, slug,
-      startDate, endDate, location, subtitle,
-      registrationLink, coverImage { asset -> { url } }
-    }`);
+  const res = await fetch(`${API_BASE}/api/v1/events`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  const json = await res.json();
+  return (json.data ?? json) as SanityEvent[];
 };
 
 export const getEventById = async (
   id: string,
-): Promise<SanityEvent | undefined> => {
-  return sanityClient.fetch(
-    `
-    *[_type == "event" && _id == $id][0] {
-      _id, title, slug,
-      speakers[] {name, title, photo { asset -> { url }}},
-      memories[] {photo { asset -> { url }}},
-      startDate, endDate, location, subtitle,
-      registrationLink, coverImage { asset -> { url } }
-    }`,
-    { id },
-  );
+): Promise<SanityEvent> => {
+  const res = await fetch(`${API_BASE}/api/v1/events/${id}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  const json = await res.json();
+  return (json.data ?? json) as SanityEvent;
 };

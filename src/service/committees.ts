@@ -1,4 +1,4 @@
-import { sanityClient } from "../lib/sanity/client";
+const API_BASE = import.meta.env.VITE_BETTER_AUTH_CLIENT;
 
 interface Committee {
   _id: string;
@@ -8,18 +8,11 @@ interface Committee {
   logo: { asset: { url: string } };
 }
 
-export const getCommittees = async () => {
-  const query = `*[_type == "committee"] {
-    _id, name, type, description, logo { asset -> { url } }
-  }`;
-  const result: Committee[] = await sanityClient.fetch(query);
+export type GroupedCommittees = Record<string, Committee[]>;
 
-  const grouped = result.reduce(
-    (acc, c) => {
-      (acc[c.type] ??= []).push(c);
-      return acc;
-    },
-    {} as Record<string, typeof result>,
-  );
-  return grouped;
+export const getCommittees = async (): Promise<GroupedCommittees> => {
+  const res = await fetch(`${API_BASE}/api/v1/committees`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  const json = await res.json();
+  return (json.data ?? json) as GroupedCommittees;
 };
