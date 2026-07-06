@@ -20,7 +20,7 @@ export const useBoardQuery = ({
   enabled = true,
 }: UseBoardQueryParams) => {
   const yf = `${year}`;
-  const yt = yearTo == null ? undefined : String(yearTo);
+  const yt = yearTo == null ? undefined : `${yearTo}`;
   return useQuery({
     queryKey: queryKeys.board.byYearAndType(yf, yt, memberType, position),
     queryFn: () =>
