@@ -115,7 +115,7 @@ function Dashboard() {
     formData.append("boardYear", currentMember.boardYear.toString());
 
     if (selectedFile) {
-      formData.append("image", selectedFile);
+      formData.append("avatar", selectedFile);
     }
 
     if (isEditing && currentMember.id) {
