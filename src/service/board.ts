@@ -66,7 +66,10 @@ export const deleteBoardMember = async ({ id }: { id: string }) => {
     method: "DELETE",
     credentials: "include",
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}}`);
+
+  if (res.status === 204) return;
   const json = await res.json();
   return json;
 };

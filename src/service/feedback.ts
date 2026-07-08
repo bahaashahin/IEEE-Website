@@ -64,15 +64,15 @@ export const updateFeedbackStatus = async ({
   return res.json();
 };
 
-export const deleteFeedback = async ({
-  id,
-}: {
-  id: string;
-}) => {
+export const deleteFeedback = async ({ id }: { id: string }) => {
   const res = await fetch(`${API_BASE}/api/v1/feedback/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  return res.json();
+
+  if (res.status === 204) return;
+  const data = await res.json();
+
+  return data;
 };
