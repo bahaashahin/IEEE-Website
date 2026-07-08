@@ -48,6 +48,7 @@ function Dashboard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [currentMember, setCurrentMember] = useState<CurrentMemberFormState>({
     name: "",
+    email: "",
     bio: "",
     position: "",
     memberType: "officer",
@@ -67,6 +68,7 @@ function Dashboard() {
   const openAddModal = () => {
     setCurrentMember({
       name: "",
+      email: "",
       bio: "",
       position: "",
       memberType: "officer",
@@ -84,6 +86,7 @@ function Dashboard() {
     setCurrentMember({
       id: member._id || member.id,
       name: member.name,
+      email: member.email,
       bio: member.bio || "",
       position: member.position || "",
       memberType: member.memberType || "officer",
@@ -102,6 +105,7 @@ function Dashboard() {
 
     const formData = new FormData();
     formData.append("name", currentMember.name);
+    formData.append("email", currentMember.email);
     formData.append("bio", currentMember.bio);
     formData.append("position", currentMember.position);
     formData.append("memberType", currentMember.memberType);

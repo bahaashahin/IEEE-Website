@@ -63,22 +63,41 @@ const MemberFormModal = ({
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="text-xs font-semibold text-slate-300 uppercase block mb-1"
-            >
-              Full Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              value={currentMember.name}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
-              placeholder="e.g. Mahmoud Ahmed"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                required
+                value={currentMember.name}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                placeholder="e.g. Mahmoud Ahmed"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={currentMember.email}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                placeholder="test@example.com"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -218,7 +237,7 @@ const MemberFormModal = ({
               onChange={handleInputChange}
               className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500 resize-none"
               placeholder="Short biography..."
-            ></textarea>
+            />
           </div>
 
           <div>
@@ -233,7 +252,7 @@ const MemberFormModal = ({
               <span>
                 {selectedFile
                   ? selectedFile.name
-                  : "Click to select an image file"}
+                  : "Click to select an image file NOT LARGER than 10MB"}
               </span>
               <input
                 id="file-input"
