@@ -84,55 +84,6 @@ const MemberFormModal = ({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label
-                htmlFor="position"
-                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
-              >
-                Position
-              </label>
-              <select
-                id="position"
-                value={currentMember.position}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
-              >
-                {currentMember.memberType === "officer" ? (
-                  <>
-                    <option value="chair">Chair</option>
-                    <option value="vice technical">Vice Technical</option>
-                    <option value="vice branding">Vice Branding</option>
-                    <option value="secretary">Secretary</option>
-                    <option value="treasurer">Treasurer</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="head">Head</option>
-                    <option value="vice head">Vice Head</option>
-                  </>
-                )}
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="track"
-                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
-              >
-                Track
-              </label>
-              <input
-                id="track"
-                type="text"
-                disabled={currentMember.memberType === "officer"}
-                value={currentMember.track}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
-                placeholder="e.g. Front End"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label
                 htmlFor="memberType"
                 className="text-xs font-semibold text-slate-300 uppercase block mb-1"
               >
@@ -164,6 +115,55 @@ const MemberFormModal = ({
                 value={currentMember.boardYear}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="position"
+                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
+              >
+                Position
+              </label>
+              <select
+                id="position"
+                value={currentMember.position}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+              >
+                {currentMember.memberType === "officer" ? (
+                  <>
+                    <option value="chair">Chair</option>
+                    <option value="vice technical">Vice Technical</option>
+                    <option value="vice branding">Vice Branding</option>
+                    <option value="secretary">Secretary</option>
+                    <option value="treasurer">Treasurer</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="head">Head</option>
+                    <option value="vice">Vice Head</option>
+                  </>
+                )}
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="track"
+                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
+              >
+                Track
+              </label>
+              <input
+                id="track"
+                type="text"
+                disabled={currentMember.memberType === "officer"}
+                value={currentMember.track}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                placeholder="e.g. Front End"
               />
             </div>
           </div>
