@@ -18,6 +18,7 @@ export interface BoardMember {
 	_id?: string;
 	id?: string;
 	name: string;
+	email: string;
 	bio?: string;
 	position?: string;
 	memberType?: BoardMemberType;
@@ -30,7 +31,8 @@ export interface BoardMember {
 
 export interface CurrentMemberFormState {
 	id?: string;
-	name: string;
+  name: string;
+	email: string;
 	bio: string;
 	position: string;
 	memberType: BoardMemberType;
