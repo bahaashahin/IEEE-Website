@@ -243,7 +243,7 @@ const Home = () => {
       </div>
 
       {/*  Events Slider Container */}
-      <div className="mt-2 mb-12">
+      <div className="mt-2 mb-12 max-w-7xl mx-auto">
         {events && (
           <CardSlider
             cards={events.map((event) => (
@@ -314,9 +314,9 @@ const Home = () => {
       </section>
 
       {/*  Our Team Section */}
-      <div className="px-6 md:px-12 pt-8 max-w-7xl mx-auto">
+      <div className="px-6 pt-8 max-w-7xl mx-auto">
         <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-base sm:text-xl lg:text-2xl gap-3">
-          <span className="font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-tr-xl rounded-br-xl shadow-md shadow-red-600/10 whitespace-nowrap">
+          <span className="font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-tr-full rounded-br-full shadow-md shadow-red-600/10 whitespace-nowrap">
             Our Team
           </span>
           <span className="text-slate-800 font-bold tracking-tight">
@@ -325,7 +325,7 @@ const Home = () => {
         </h2>
       </div>
 
-      <div className="mt-6 mb-16">
+      <div className="mt-6 mb-16 mx-auto max-w-7xl">
         <CardSlider
           cards={officers.map((officer) => (
             <Card

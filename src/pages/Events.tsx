@@ -13,7 +13,7 @@ const Events = () => {
       />
 
       {/* Main Title Section */}
-      <div className="px-4 sm:px-10 py-1 mt-8">
+      <div className="px-4 sm:px-10 py-1 mt-8 max-w-7xl mx-auto">
         <h2 className="flex flex-col lg:flex-row items-start lg:items-center text-xl sm:text-2xl font-bold gap-3 lg:gap-4 mb-8 leading-relaxed">
           <span className="bg-red-600 text-white px-3 py-1.5 rounded-tr-2xl rounded-br-2xl text-sm sm:text-base whitespace-nowrap shadow-sm">
             Our Events
@@ -36,11 +36,11 @@ const Events = () => {
             >
               <CardEvent
                 id={event._id}
-                image={event.coverImage?.asset?.url}
+                image={event.coverImage?.asset?.url ?? ""}
                 title={event.title}
-                text={event.subtitle}
+                text={event.subtitle ?? ""}
                 date={`${new Date(event.startDate).toLocaleDateString()} - ${event.endDate ? new Date(event.endDate).toLocaleDateString() : "TBD"}`}
-                location={event.location}
+                location={event.location ?? ""}
                 className={`grid grid-cols-1 lg:grid-cols-2 ${isFifthItem ? "md:max-w-[calc(50%-12px)] lg:max-w-none" : ""}`}
               />
             </div>
