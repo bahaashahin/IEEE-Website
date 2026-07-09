@@ -1,5 +1,3 @@
-const API_BASE = import.meta.env.VITE_BETTER_AUTH_CLIENT;
-
 export interface FeedbackPayload {
   name: string;
   email: string;
@@ -8,7 +6,7 @@ export interface FeedbackPayload {
 }
 
 export const submitFeedback = async (payload: FeedbackPayload) => {
-  const res = await fetch(`${API_BASE}/api/v1/feedback`, {
+  const res = await fetch(`/api/v1/feedback`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -25,7 +23,6 @@ export type FeedbackStatus = "unread" | "read" | "archived" | "resolved";
 
 export interface FeedbackItem {
   id: string;
-  _id?: string;
   name: string;
   email: string;
   phone?: string;
@@ -37,7 +34,7 @@ export interface FeedbackItem {
 }
 
 export const getFeedbacks = async (): Promise<FeedbackItem[]> => {
-  const res = await fetch(`${API_BASE}/api/v1/feedback`, {
+  const res = await fetch(`/api/v1/feedback`, {
     credentials: "include"
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
@@ -52,7 +49,7 @@ export const updateFeedbackStatus = async ({
   id: string;
   status: string;
 }) => {
-  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}/status`, {
+  const res = await fetch(`/api/v1/feedback/${id}/status`, {
     method: "PATCH",
     credentials: "include",
     headers: {
@@ -65,7 +62,7 @@ export const updateFeedbackStatus = async ({
 };
 
 export const deleteFeedback = async ({ id }: { id: string }) => {
-  const res = await fetch(`${API_BASE}/api/v1/feedback/${id}`, {
+  const res = await fetch(`/api/v1/feedback/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
