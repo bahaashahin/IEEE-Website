@@ -43,6 +43,10 @@ export const useUpdateBoardMember = () => {
   return useMutation({
     mutationFn: updateBoardMember,
     onMutate: async (variables) => {
+      console.log(
+        "[useUpdateBoardMember][onMutate] Mutation started. Variables:",
+        variables,
+      );
       await queryClient.cancelQueries({
         queryKey: queryKeys.board.all,
         exact: false,
@@ -51,6 +55,10 @@ export const useUpdateBoardMember = () => {
         queryKey: queryKeys.board.all,
         exact: false,
       });
+      console.log(
+        "[useUpdateBoardMember][onMutate] Captured previous cache state:",
+        previous,
+      );
 
       // Optimistic patch: merge formData entries onto the existing cached item(s)
       try {
@@ -82,6 +90,12 @@ export const useUpdateBoardMember = () => {
         });
         queries.forEach(([qKey, cached]) => {
           if (!cached) return;
+          console.log(
+            "[useUpdateBoardMember][onMutate] Optimistically patching cache key:",
+            qKey,
+            "current value:",
+            cached,
+          );
           if (Array.isArray(cached)) {
             queryClient.setQueryData(qKey as unknown[], (old: any[]) => {
               if (!old) return old;
@@ -163,6 +177,12 @@ export const useUpdateBoardMember = () => {
         variables,
       );
       context?.previous?.forEach(([queryKey, data]) => {
+        console.log(
+          "[useUpdateBoardMember][onError] Rolling back query key:",
+          queryKey,
+          "to:",
+          data,
+        );
         queryClient.setQueryData(queryKey as unknown[], data);
       });
     },
@@ -214,10 +234,18 @@ export const useUpdateBoardMember = () => {
           // Immediately refetch the specific queries we patched to ensure fresh authoritative data
           for (const k of patchedKeys) {
             try {
+              console.log(
+                "[useUpdateBoardMember][onSuccess] Triggering active refetch for key:",
+                k,
+              );
               await queryClient.refetchQueries({
                 queryKey: k as any[],
                 exact: true,
               });
+              console.log(
+                "[useUpdateBoardMember][onSuccess] Refetch finished for key:",
+                k,
+              );
             } catch (refErr) {
               console.error(
                 "[board-mutation][update][onSuccess] refetch error for key=",
@@ -237,6 +265,11 @@ export const useUpdateBoardMember = () => {
           err,
         );
       }
+
+      console.log(
+        "[useUpdateBoardMember][onSuccess] Invalidating all queries starting with:",
+        queryKeys.board.all,
+      );
       // Invalidate to trigger fresh refetches for any remaining entries
       queryClient.invalidateQueries({
         queryKey: queryKeys.board.all,
