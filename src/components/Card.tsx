@@ -3,7 +3,7 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 interface CardProps {
   imageSrc: string;
   name: string;
-  title: string;
+  title?: string;
   text: string;
   facebookLink?: string;
   instagramLink?: string;
@@ -31,7 +31,7 @@ const CardMember = ({
       <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md rounded-xl p-3 sm:p-4 flex flex-col items-center justify-between border border-white/40 shadow-lg transition-all duration-300 group-hover:bg-white/90">
         <div className="w-full text-center space-y-1">
           <p className="text-slate-900 text-base sm:text-lg md:text-[20px] font-extrabold tracking-tight line-clamp-1">
-            {name} - {title}
+            {name} {title && `- ${title}`}
           </p>
           <p className="text-slate-600 text-xs sm:text-sm md:text-[15px] font-medium line-clamp-1">
             {text}
