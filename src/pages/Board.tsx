@@ -3,9 +3,9 @@ import { Fragment, useState } from "react";
 import { useBoardQuery } from "../hooks";
 import { Section, CardSlider, Card, BoardYearSelector } from "../components";
 import { selectMemberPosition } from "../utils/member.position";
-import { boardMember, boardMemberType } from "../types";
+import { BoardMember, BoardMemberType } from "../types";
 
-const sectionsToRender: { title: string; key: boardMemberType }[] = [
+const sectionsToRender: { title: string; key: BoardMemberType }[] = [
   { title: "Our Officers", key: "officer" },
   { title: "Technical Board", key: "technical" },
   { title: "Branding Board", key: "branding" },
@@ -23,14 +23,14 @@ const Board = () => {
     memberType: "officer,technical,operation,branding",
   });
 
-  const boardData: Record<boardMemberType, boardMember[]> = {
+  const boardData: Record<BoardMemberType, BoardMember[]> = {
     officer: data?.officer ?? [],
     technical: data?.technical ?? [],
     branding: data?.branding ?? [],
     operation: data?.operation ?? [],
   };
 
-  const renderBoardSection = (title: string, data: boardMember[]) => {
+  const renderBoardSection = (title: string, data: BoardMember[]) => {
     if (!data || data.length === 0) return null;
     return (
       <Fragment key={title}>
