@@ -1,5 +1,3 @@
-const API_BASE = import.meta.env.VITE_BETTER_AUTH_CLIENT;
-
 interface Speaker {
   name: string;
   title: string;
@@ -25,7 +23,7 @@ export interface SanityEvent {
 }
 
 export const getEvents = async (): Promise<SanityEvent[]> => {
-  const res = await fetch(`${API_BASE}/api/v1/events`);
+  const res = await fetch(`/api/v1/events`);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const json = await res.json();
   return (json.data ?? json) as SanityEvent[];
@@ -34,7 +32,7 @@ export const getEvents = async (): Promise<SanityEvent[]> => {
 export const getEventById = async (
   id: string,
 ): Promise<SanityEvent> => {
-  const res = await fetch(`${API_BASE}/api/v1/events/${id}`);
+  const res = await fetch(`/api/v1/events/${id}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const json = await res.json();
   return (json.data ?? json) as SanityEvent;
