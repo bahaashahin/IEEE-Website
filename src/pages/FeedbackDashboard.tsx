@@ -94,7 +94,7 @@ function FeedbackDashboard() {
         {filteredFeedbacks.length > 0 &&
           filteredFeedbacks.map((fb) => (
             <FeedbackCard
-              key={fb.id ?? fb._id}
+              key={fb.id}
               feedback={fb}
               onStatusChange={toggleStatus}
               onDelete={triggerDeleteModal}
