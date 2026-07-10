@@ -3,7 +3,7 @@ import { CgLock } from "react-icons/cg";
 import { LuMail, LuArrowLeft } from "react-icons/lu";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { signIn, useSession } from "../lib/auth-client";
+import { signIn } from "../lib/auth-client";
 
 type LoginCredentials = {
   email: string;
@@ -20,13 +20,6 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const { data: sessionData } = useSession();
-
-  useEffect(() => {
-    if (sessionData?.session) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [sessionData, navigate]);
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,6 +39,7 @@ function Login() {
         );
         return;
       }
+      navigate("/dashboard", { replace: true });
     } catch {
       setErrorMessage("Unable to connect to the authentication service.");
     } finally {
