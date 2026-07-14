@@ -29,7 +29,7 @@ const CardMember = ({
       />
 
       <div className="absolute bottom-4 left-4 right-4 bg-white/80 backdrop-blur-md rounded-xl p-3 sm:p-4 flex flex-col items-center justify-between border border-white/40 shadow-lg transition-all duration-300 group-hover:bg-white/90">
-        <div className="w-full text-center space-y-1">
+        <div className="w-full text-center space-y-1 capitalize">
           <p className="text-slate-900 text-base sm:text-lg md:text-[20px] font-extrabold tracking-tight line-clamp-1">
             {name} {title && `- ${title}`}
           </p>
