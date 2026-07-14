@@ -9,7 +9,14 @@ import since2018 from "../assets/about-img/sence2018.svg";
 import { useBoardQuery } from "../hooks";
 import { Section, CardSlider, Card } from "../components";
 import { selectMemberPosition } from "../utils/member.position";
-import { boardMember } from "../types";
+import { BoardMember } from "../types";
+
+const stats = [
+  { number: "+50", text: "Workshops" },
+  { number: "+200", text: "Trainees" },
+  { number: "+150", text: "Events" },
+  { number: "+10", text: "Years Experience" },
+];
 
 const About = () => {
   const lastYear = new Date().getFullYear().toString();
@@ -30,12 +37,7 @@ const About = () => {
 
       <div className="container mx-auto px-4 relative -mt-24 z-30">
         <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-          {[
-            { number: "+50", text: "Workshops" },
-            { number: "+200", text: "Trainees" },
-            { number: "+150", text: "Events" },
-            { number: "+10", text: "Years Experience" },
-          ].map((item, index) => (
+          {stats.map((item, index) => (
             <div
               key={index}
               className="w-[calc(50%-8px)] sm:w-40 md:w-48 lg:w-56 h-28 bg-white shadow-xl shadow-blue-900/5 rounded-2xl flex flex-col items-center justify-center text-center p-3 border border-gray-100/50 transform hover:-translate-y-1 transition duration-300"
@@ -208,7 +210,7 @@ const About = () => {
           {/* 🚨 العرض المصحح: نتحقق من أن lastChairmen مصفوفة ونقوم بتمريرها */}
           {!isLoading && lastChairPerson.length > 0 ? (
             <CardSlider
-              cards={lastChairPerson.map((chairPerson: boardMember) => (
+              cards={lastChairPerson.map((chairPerson: BoardMember) => (
                 <Card
                   key={chairPerson.id}
                   name={chairPerson.name}
