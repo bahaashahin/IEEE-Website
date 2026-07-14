@@ -1,18 +1,13 @@
 import { Link } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
 
-import { useBoardQuery, useEventsQuery } from "../hooks";
+import { useBoardQuery, useEventsQuery, useHomeHeroImages } from "../hooks";
 import { selectMemberPosition } from "../utils/member.position";
 import { CardSlider, CardEvent, CardLogo, Card } from "../components";
 import { BoardMember } from "../types";
 
 import Logo from "../assets/logo.WebP";
 import discover from "../assets/home-img/discover.jpg";
-import pic1 from "../assets/home-img/pic-1.jpg";
-import pic2 from "../assets/home-img/pic-2.jpg";
-import pic3 from "../assets/home-img/pic-3.jpg";
-import bubble1 from "../assets/section-bubles/bubble1.png";
-import bubble2 from "../assets/section-bubles/bubble2.png";
 import multi from "../assets/home-img/multi.svg";
 import operation from "../assets/home-img/operation.svg";
 import tech from "../assets/home-img/tech.svg";
@@ -38,46 +33,18 @@ const committeesIntro = [
   },
 ];
 
-const heroSection = [
-  {
-    src: pic1,
-    alt: "Team 1",
-    className:
-      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute top-0 left-[205px] lg:left-[470px] transform -translate-x-1/2 z-20",
-  },
-
-  {
-    src: pic2,
-    alt: "Team 2",
-    className:
-      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute bottom-0 left-[205px] lg:left-[350px] transform -translate-x-1/2 z-20",
-  },
-  {
-    src: pic3,
-    alt: "Team 3",
-    className:
-      "w-[130px] h-[130px] md:w-36 md:h-36 lg:w-[200px] lg:h-[200px] object-cover rounded-full absolute top-1/2 left-[10px] lg:left-[0px] transform -translate-y-1/2 z-20",
-  },
-  {
-    src: bubble1,
-    alt: "bubble1",
-    className:
-      "absolute lg:bottom-[-100px] lg:right-[90px] lg:-translate-y-[20%] bottom-[120px] left-[-10px] w-[250px] sm:w-434 lg:w-[350px] rotate-[43.61deg]",
-  },
-  {
-    src: bubble2,
-    alt: "bubble2",
-    className:
-      "absolute lg:top-[200px] lg:left-[206px] lg:-translate-y-[30%] w-[250px] sm:w-[350px] lg:w-601.6 rotate-[151.52deg]",
-  },
-];
-
 const Home = () => {
   const lastYear = new Date().getFullYear().toString();
   const { data, isLoading, error } = useBoardQuery({
     year: lastYear,
     memberType: "officer",
   });
+
+  const {
+    data: homeHeroImages,
+    isLoading: isLoadingHomeHeroImages,
+    error: errorHomeHeroImages,
+  } = useHomeHeroImages();
   const officers: BoardMember[] = data?.officer ?? [];
 
   const { data: events } = useEventsQuery();
@@ -143,7 +110,7 @@ const Home = () => {
             </div>
 
             <p className="text-sm md:text-base lg:text-lg max-w-md text-blue-100/80 leading-relaxed font-medium">
-              Be part of the movement that pushes the limits of what’s possible
+              Be part of the movement that pushes the limits of what's possible
               in technology and engineering innovation.
             </p>
 
@@ -161,15 +128,19 @@ const Home = () => {
           </div>
 
           <div className="relative flex justify-center items-center h-[380px] md:h-[450px] w-full max-w-[500px] mx-auto">
-            {heroSection.map((item, index) => (
-              <img
-                key={`${index}-${item.alt}`}
-                src={item.src}
-                alt={item.alt}
-                loading="lazy"
-                className={item.className}
-              />
-            ))}
+            {isLoadingHomeHeroImages ? (
+              <div className="animate-pulse bg-gradient-to-r from-blue-900/50 to-slate-900/50 border border-white/5 w-full h-full rounded-2xl"></div>
+            ) : (
+              homeHeroImages?.map((item, index) => (
+                <img
+                  key={`${index}-${item.alt}`}
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  className={item.className}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -208,8 +179,8 @@ const Home = () => {
             <p className="text-slate-600 text-sm md:text-base font-medium leading-relaxed">
               IEEE Al-Azhar SB is dependent on the{" "}
               <strong className="text-slate-900 font-semibold">
-                "IEEE Egypt Section"
-              </strong>
+                IEEE Egypt Section
+              </strong>{" "}
               which was established on September 8, 1955, as the 2nd IEEE
               section outside the US, and the 2nd IEEE section in R8 (Africa,
               Europe and the Middle East). The IEEE Egypt section is supervising
@@ -329,6 +300,7 @@ const Home = () => {
         <CardSlider
           cards={officers.map((officer) => (
             <Card
+              key={officer.id}
               imageSrc={officer.image_url}
               name={officer.name}
               title={`${selectMemberPosition(officer, officers[0]?.gender)}`}
