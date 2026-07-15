@@ -45,6 +45,8 @@ function Dashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [currentMember, setCurrentMember] = useState<CurrentMemberFormState>({
     name: "",
@@ -79,6 +81,7 @@ function Dashboard() {
     });
     setSelectedFile(null);
     setIsEditing(false);
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -97,6 +100,7 @@ function Dashboard() {
     });
     setSelectedFile(null);
     setIsEditing(true);
+    setFormError(null);
     setIsModalOpen(true);
   };
 
@@ -127,7 +131,11 @@ function Dashboard() {
         { id: currentMember.id, formData },
         {
           onSuccess: () => {
+            setFormError(null);
             setIsModalOpen(false);
+          },
+          onError: (err: any) => {
+            setFormError(err.message || "Failed to update member.");
           },
         },
       );
@@ -136,7 +144,11 @@ function Dashboard() {
         { formData },
         {
           onSuccess: () => {
+            setFormError(null);
             setIsModalOpen(false);
+          },
+          onError: (err: any) => {
+            setFormError(err.message || "Failed to create member.");
           },
         },
       );
@@ -156,6 +168,7 @@ function Dashboard() {
 
   const triggerDeleteModal = (id: string) => {
     setMemberIdToDelete(id);
+    setDeleteError(null);
     setIsDeleteModalOpen(true);
   };
 
@@ -166,8 +179,12 @@ function Dashboard() {
       { id: memberIdToDelete },
       {
         onSuccess: () => {
+          setDeleteError(null);
           setIsDeleteModalOpen(false);
           setMemberIdToDelete(null);
+        },
+        onError: (err: any) => {
+          setDeleteError(err.message || "Failed to delete member.");
         },
       },
     );
@@ -275,6 +292,7 @@ function Dashboard() {
         currentMember={currentMember}
         selectedFile={selectedFile}
         isPending={isCreating || isUpdating}
+        errorMessage={formError}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSaveMember}
         onFieldChange={handleFieldChange}
@@ -284,6 +302,7 @@ function Dashboard() {
       <DeleteModal
         isOpen={isDeleteModalOpen}
         isPending={isDeleting}
+        errorMessage={deleteError}
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmDelete}
       />

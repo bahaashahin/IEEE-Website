@@ -3,6 +3,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 interface DeleteModalProps {
   isOpen: boolean;
   isPending: boolean;
+  errorMessage?: string | null;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -10,6 +11,7 @@ interface DeleteModalProps {
 const DeleteModal = ({
   isOpen,
   isPending,
+  errorMessage,
   onCancel,
   onConfirm,
 }: DeleteModalProps) => {
@@ -28,6 +30,11 @@ const DeleteModal = ({
           Are you sure you want to completely remove this member from the IEEE
           database? This action is irreversible.
         </p>
+        {errorMessage && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs rounded-xl p-3 mb-6 text-left">
+            {errorMessage}
+          </div>
+        )}
         <div className="flex justify-center gap-3">
           <button
             type="button"

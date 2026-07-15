@@ -9,6 +9,7 @@ interface MemberFormModalProps {
   currentMember: CurrentMemberFormState;
   selectedFile: File | null;
   isPending: boolean;
+  errorMessage?: string | null;
   onClose: () => void;
   onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
   onFieldChange: <K extends keyof CurrentMemberFormState>(
@@ -24,6 +25,7 @@ const MemberFormModal = ({
   currentMember,
   selectedFile,
   isPending,
+  errorMessage,
   onClose,
   onSubmit,
   onFieldChange,
@@ -263,6 +265,13 @@ const MemberFormModal = ({
               />
             </div>
           </div>
+
+          {errorMessage && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs rounded-xl p-3 flex items-center gap-2">
+              <FiX className="text-red-400 shrink-0 cursor-pointer" size={16} onClick={() => {}} />
+              <span>{errorMessage}</span>
+            </div>
+          )}
 
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-700 mt-6">
             <button

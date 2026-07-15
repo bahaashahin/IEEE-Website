@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateFeedbackStatus, deleteFeedback, FeedbackItem } from "../../service/feedback";
+import {
+  updateFeedbackStatus,
+  deleteFeedback,
+  FeedbackItem,
+  FeedbackStatus,
+} from "../../service/feedback";
 import { queryKeys } from "../../lib/queryKeys";
-
 
 export const useUpdateFeedbackStatus = () => {
   const queryClient = useQueryClient();
@@ -11,7 +15,7 @@ export const useUpdateFeedbackStatus = () => {
     onMutate: async ({ id, status }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.feedback.all });
       const previousFeedbacks = queryClient.getQueryData<FeedbackItem[]>(
-        queryKeys.feedback.all
+        queryKeys.feedback.all,
       );
 
       if (previousFeedbacks) {
@@ -19,8 +23,10 @@ export const useUpdateFeedbackStatus = () => {
           queryKeys.feedback.all,
           (old) =>
             old?.map((fb) =>
-              (fb.id ?? fb._id) === id ? { ...fb, status } : fb
-            ) ?? []
+              (fb.id ?? fb._id) === id
+                ? { ...fb, status: status as FeedbackStatus }
+                : fb,
+            ) ?? [],
         );
       }
       return { previousFeedbacks };
@@ -29,7 +35,7 @@ export const useUpdateFeedbackStatus = () => {
       if (context?.previousFeedbacks) {
         queryClient.setQueryData(
           queryKeys.feedback.all,
-          context.previousFeedbacks
+          context.previousFeedbacks,
         );
       }
     },
@@ -47,13 +53,13 @@ export const useDeleteFeedback = () => {
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({ queryKey: queryKeys.feedback.all });
       const previousFeedbacks = queryClient.getQueryData<FeedbackItem[]>(
-        queryKeys.feedback.all
+        queryKeys.feedback.all,
       );
 
       if (previousFeedbacks) {
         queryClient.setQueryData<FeedbackItem[]>(
           queryKeys.feedback.all,
-          (old) => old?.filter((fb) => (fb.id ?? fb._id) !== id) ?? []
+          (old) => old?.filter((fb) => (fb.id ?? fb._id) !== id) ?? [],
         );
       }
       return { previousFeedbacks };
@@ -62,7 +68,7 @@ export const useDeleteFeedback = () => {
       if (context?.previousFeedbacks) {
         queryClient.setQueryData(
           queryKeys.feedback.all,
-          context.previousFeedbacks
+          context.previousFeedbacks,
         );
       }
     },

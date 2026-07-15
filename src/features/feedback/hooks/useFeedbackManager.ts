@@ -14,6 +14,8 @@ export const useFeedbackManager = () => {
   const [statusFilter, setStatusFilter] = useState<FeedbackFilter>("unread");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [feedbackIdToDelete, setFeedbackIdToDelete] = useState<string | null>(null);
+  const [mutationError, setMutationError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const {
     data: feedbacks = [],
@@ -28,21 +30,37 @@ export const useFeedbackManager = () => {
 
   const triggerDeleteModal = (id: string) => {
     setFeedbackIdToDelete(id);
+    setDeleteError(null);
     setIsDeleteModalOpen(true);
   };
 
   const confirmDelete = () => {
     if (feedbackIdToDelete === null) return;
-    deleteFeedback({ id: feedbackIdToDelete });
-    setIsDeleteModalOpen(false);
-    setFeedbackIdToDelete(null);
+    deleteFeedback(
+      { id: feedbackIdToDelete },
+      {
+        onSuccess: () => {
+          setDeleteError(null);
+          setIsDeleteModalOpen(false);
+          setFeedbackIdToDelete(null);
+        },
+        onError: (err: any) => {
+          setDeleteError(err.message || "Failed to delete feedback.");
+        },
+      }
+    );
   };
 
   const toggleStatus = (id: string, newStatus: string) => {
-    updateStatus({
-      id,
-      status: newStatus,
-    });
+    setMutationError(null);
+    updateStatus(
+      { id, status: newStatus },
+      {
+        onError: (err: any) => {
+          setMutationError(err.message || "Failed to update feedback status.");
+        },
+      }
+    );
   };
 
   const filteredFeedbacks = useMemo(() => {
@@ -90,5 +108,9 @@ export const useFeedbackManager = () => {
     error,
     refetch,
     isDeleting,
+    mutationError,
+    setMutationError,
+    deleteError,
+    setDeleteError,
   };
 };

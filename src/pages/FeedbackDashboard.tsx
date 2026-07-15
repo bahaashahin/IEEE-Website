@@ -12,6 +12,7 @@ import {
   FeedbackStatsRow,
   useFeedbackManager,
 } from "../features/feedback";
+import { ToastNotification } from "../components";
 
 function FeedbackDashboard() {
   const {
@@ -33,6 +34,9 @@ function FeedbackDashboard() {
     error,
     refetch,
     isDeleting,
+    mutationError,
+    setMutationError,
+    deleteError,
   } = useFeedbackManager();
 
   return (
@@ -105,8 +109,15 @@ function FeedbackDashboard() {
       <FeedbackDeleteModal
         isOpen={isDeleteModalOpen}
         isPending={isDeleting}
+        errorMessage={deleteError}
         onCancel={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmDelete}
+      />
+
+      <ToastNotification
+        message={mutationError}
+        type="error"
+        onClose={() => setMutationError(null)}
       />
     </main>
   );
