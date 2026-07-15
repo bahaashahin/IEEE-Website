@@ -3,6 +3,7 @@ import { TbAlertTriangle } from "react-icons/tb";
 interface FeedbackDeleteModalProps {
   isOpen: boolean;
   isPending: boolean;
+  errorMessage?: string | null;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -10,6 +11,7 @@ interface FeedbackDeleteModalProps {
 const FeedbackDeleteModal = ({
   isOpen,
   isPending,
+  errorMessage,
   onCancel,
   onConfirm,
 }: FeedbackDeleteModalProps) => {
@@ -26,6 +28,11 @@ const FeedbackDeleteModal = ({
           Are you completely sure you want to remove this feedback? This cannot
           be undone.
         </p>
+        {errorMessage && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-300 text-xs rounded-xl p-3 mb-6 text-left">
+            {errorMessage}
+          </div>
+        )}
         <div className="flex justify-center gap-3">
           <button
             type="button"

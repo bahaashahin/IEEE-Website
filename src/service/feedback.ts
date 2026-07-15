@@ -1,3 +1,7 @@
+import { throwIfNotOk } from "../lib/apiError";
+
+export type FeedbackStatus = "unread" | "read" | "archived" | "resolved";
+
 export interface FeedbackPayload {
   name: string;
   email: string;
@@ -5,24 +9,9 @@ export interface FeedbackPayload {
   message: string;
 }
 
-export const submitFeedback = async (payload: FeedbackPayload) => {
-  const res = await fetch(`/api/v1/feedback`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  }
-
-  return res.json();
-};
-
-export type FeedbackStatus = "unread" | "read" | "archived" | "resolved";
-
 export interface FeedbackItem {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   phone?: string;
@@ -33,11 +22,31 @@ export interface FeedbackItem {
   date?: string;
 }
 
+interface DeleteFeedbackDTO {
+  id: string;
+}
+
+export const submitFeedback = async (payload: FeedbackPayload) => {
+  const res = await fetch(`/api/v1/feedback`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  await throwIfNotOk(res);
+
+  return res.json();
+};
+
+interface UpdateFeedbackStatusDTO extends DeleteFeedbackDTO {
+  status: FeedbackStatus;
+}
+
 export const getFeedbacks = async (): Promise<FeedbackItem[]> => {
   const res = await fetch(`/api/v1/feedback`, {
-    credentials: "include"
+    credentials: "include",
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  await throwIfNotOk(res);
   const json = await res.json();
   return (json.data ?? json) as FeedbackItem[];
 };
@@ -45,10 +54,7 @@ export const getFeedbacks = async (): Promise<FeedbackItem[]> => {
 export const updateFeedbackStatus = async ({
   id,
   status,
-}: {
-  id: string;
-  status: string;
-}) => {
+}: UpdateFeedbackStatusDTO) => {
   const res = await fetch(`/api/v1/feedback/${id}/status`, {
     method: "PATCH",
     credentials: "include",
@@ -57,16 +63,16 @@ export const updateFeedbackStatus = async ({
     },
     body: JSON.stringify({ status }),
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  await throwIfNotOk(res);
   return res.json();
 };
 
-export const deleteFeedback = async ({ id }: { id: string }) => {
+export const deleteFeedback = async ({ id }: DeleteFeedbackDTO) => {
   const res = await fetch(`/api/v1/feedback/${id}`, {
     method: "DELETE",
     credentials: "include",
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+  await throwIfNotOk(res);
 
   if (res.status === 204) return;
   const data = await res.json();
