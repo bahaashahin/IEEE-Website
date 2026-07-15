@@ -39,6 +39,9 @@ export const queryKeys = {
   boardYears: {
     all: ["boardYears"] as const,
   },
+  boardMeta: {
+    all: ["boardMeta"] as const,
+  },
   feedback: {
     all: ["feedback"] as const,
   },

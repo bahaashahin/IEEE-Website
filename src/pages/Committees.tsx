@@ -13,7 +13,7 @@ const COMMITTEE_TITLES = {
 
 const Committees = () => {
   const [activeTab, setActiveTab] =
-    useState<keyof Omit<BoardMemberType, "officer">>("operation");
+    useState<Exclude<BoardMemberType, "officer">>("technical");
   const { data: committees, isLoading, error } = useCommitteesQuery();
 
   if (isLoading) {
@@ -32,7 +32,7 @@ const Committees = () => {
         additionalText="Committees working together to achieve our goals."
       />
 
-      <div className="px-4 sm:px-10 mb-6">
+      <div className="container mx-auto px-4 sm:px-10 mb-6">
         {/* Tabs Control Wrapper */}
         <div className="px-10 pt-3 2xl:pt-16">
           <div className="flex flex-col sm:flex-row mx-auto items-center gap-2 sm:gap-4 bg-[#acabab30] p-1 rounded-2xl sm:rounded-full w-full sm:w-fit mb-4">
@@ -42,7 +42,7 @@ const Committees = () => {
                   key={section}
                   onClick={() =>
                     setActiveTab(
-                      section as keyof Omit<BoardMemberType, "officer">,
+                      section as Exclude<BoardMemberType, "officer">,
                     )
                   }
                   className={`px-4 py-1 text-white ${
@@ -67,7 +67,7 @@ const Committees = () => {
       </div>
 
       {/* Cards Grid Grid */}
-      <div className="px-4 sm:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-12">
+      <div className="container mx-auto px-4 sm:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-12">
         {committees &&
           committees[activeTab as string].map((card) => (
             <CardLogo

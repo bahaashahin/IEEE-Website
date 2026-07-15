@@ -74,7 +74,7 @@ const Board = () => {
         additionalText="A community of tech enthusiasts driving innovation"
       />
 
-      <div className="container mx-auto py-6 space-y-8">
+        <div className="container mx-auto py-6 space-y-8">
         {/* ── Year selector ─────────────────────────────────────────────────────── */}
         <div className="px-10 flex justify-end items-center gap-4">
           <BoardYearSelector

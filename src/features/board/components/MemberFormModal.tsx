@@ -1,7 +1,8 @@
 import { FiImage, FiX } from "react-icons/fi";
 
 import type { SubmitEvent, ChangeEvent } from "react";
-import { CurrentMemberFormState } from "../hooks/useBoardMembers";
+import { CurrentMemberFormState, BoardMemberType } from "../hooks/useBoardMembers";
+import { BoardMetaResponse } from "../../../service/board";
 
 interface MemberFormModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface MemberFormModalProps {
   selectedFile: File | null;
   isPending: boolean;
   errorMessage?: string | null;
+  boardMeta?: BoardMetaResponse | null;
   onClose: () => void;
   onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
   onFieldChange: <K extends keyof CurrentMemberFormState>(
@@ -26,6 +28,7 @@ const MemberFormModal = ({
   selectedFile,
   isPending,
   errorMessage,
+  boardMeta,
   onClose,
   onSubmit,
   onFieldChange,
@@ -44,6 +47,19 @@ const MemberFormModal = ({
       );
       return;
     }
+    
+    if (id === "memberType") {
+      const newType = value as BoardMemberType;
+      onFieldChange("memberType", newType);
+      
+      const allowedPositions = boardMeta?.allowedPositionsByType[newType];
+      const firstPosition = allowedPositions?.[0] ?? "";
+      onFieldChange("position", firstPosition);
+      
+      onFieldChange("track", "");
+      return;
+    }
+    
     onFieldChange(id as keyof CurrentMemberFormState, value as never);
   };
 
@@ -51,6 +67,19 @@ const MemberFormModal = ({
     const file = e.target.files?.[0] ?? null;
     onFileChange(file);
   };
+
+  const memberTypes = boardMeta?.memberTypes ?? ["officer", "technical", "branding", "operation"];
+  
+  const allowedPositions = boardMeta?.allowedPositionsByType[currentMember.memberType] ?? (
+    currentMember.memberType === "officer" 
+      ? ["chair", "vice technical", "vice branding", "secretary", "treasurer"]
+      : ["head", "vice"]
+  );
+
+  const allowedTracks = boardMeta?.allowedTracksByType[currentMember.memberType] ?? [];
+  const trackGroups = boardMeta?.technicalTrackGroups;
+
+  const genders = boardMeta?.genders ?? ["male", "female"];
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
@@ -114,12 +143,13 @@ const MemberFormModal = ({
                 id="memberType"
                 value={currentMember.memberType}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500 capitalize"
               >
-                <option value="officer">Officer</option>
-                <option value="technical">Technical</option>
-                <option value="branding">Branding</option>
-                <option value="operation">Operation</option>
+                {memberTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
@@ -141,7 +171,7 @@ const MemberFormModal = ({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className={currentMember.memberType === "officer" ? "col-span-2" : ""}>
               <label
                 htmlFor="position"
                 className="text-xs font-semibold text-slate-300 uppercase block mb-1"
@@ -152,41 +182,59 @@ const MemberFormModal = ({
                 id="position"
                 value={currentMember.position}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500 capitalize"
               >
-                {currentMember.memberType === "officer" ? (
-                  <>
-                    <option value="chair">Chair</option>
-                    <option value="vice technical">Vice Technical</option>
-                    <option value="vice branding">Vice Branding</option>
-                    <option value="secretary">Secretary</option>
-                    <option value="treasurer">Treasurer</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="head">Head</option>
-                    <option value="vice">Vice Head</option>
-                  </>
-                )}
+                {allowedPositions.map((pos) => (
+                  <option key={pos} value={pos}>
+                    {pos}
+                  </option>
+                ))}
               </select>
             </div>
-            <div>
-              <label
-                htmlFor="track"
-                className="text-xs font-semibold text-slate-300 uppercase block mb-1"
-              >
-                Track
-              </label>
-              <input
-                id="track"
-                type="text"
-                disabled={currentMember.memberType === "officer"}
-                value={currentMember.track}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
-                placeholder="e.g. Front End"
-              />
-            </div>
+            {currentMember.memberType !== "officer" && (
+              <div>
+                <label
+                  htmlFor="track"
+                  className="text-xs font-semibold text-slate-300 uppercase block mb-1"
+                >
+                  Track
+                </label>
+                {boardMeta ? (
+                  <select
+                    id="track"
+                    value={currentMember.track}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500 capitalize"
+                  >
+                    <option value="">Select a track</option>
+                    {currentMember.memberType === "technical" && trackGroups
+                      ? Object.entries(trackGroups).map(([group, tracks]) => (
+                          <optgroup key={group} label={group}>
+                            {tracks.map((track) => (
+                              <option key={track} value={track}>
+                                {track}
+                              </option>
+                            ))}
+                          </optgroup>
+                        ))
+                      : allowedTracks.map((track) => (
+                          <option key={track} value={track}>
+                            {track}
+                          </option>
+                        ))}
+                  </select>
+                ) : (
+                  <input
+                    id="track"
+                    type="text"
+                    value={currentMember.track}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                    placeholder="e.g. Front End"
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -201,10 +249,13 @@ const MemberFormModal = ({
                 id="gender"
                 value={currentMember.gender}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-3 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500 capitalize"
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                {genders.map((gender) => (
+                  <option key={gender} value={gender}>
+                    {gender}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
