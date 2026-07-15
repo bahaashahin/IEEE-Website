@@ -1,7 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_BETTER_AUTH_CLIENT: string;
+  readonly VITE_BACKEND_URL: string;
+  readonly VITE_FRONTEND_URL: string;
 }
 
 interface ImportMeta {
