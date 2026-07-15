@@ -18,6 +18,21 @@ interface DeleteMemberDTO {
 
 interface UpdateMemberDTO extends CreateMemberDTO, DeleteMemberDTO {}
 
+export interface BoardMetaResponse {
+  memberTypes: string[];
+  genders: string[];
+  allowedPositionsByType: Record<string, string[]>;
+  allowedTracksByType: Record<string, string[]>;
+  technicalTrackGroups: Record<string, string[]>;
+}
+
+export const fetchBoardMeta = async (): Promise<BoardMetaResponse> => {
+  const res = await fetch(`/api/v1/board/meta`);
+  await throwIfNotOk(res);
+  const json = await res.json();
+  return json.data;
+};
+
 export const fetchBoard = async (params: BoardQueryParams) => {
   const searchParams = new URLSearchParams(
     Object.entries(params).filter(([, v]) => v !== undefined) as [

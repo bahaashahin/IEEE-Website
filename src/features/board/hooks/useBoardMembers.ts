@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { useBoardQuery } from "../../../hooks/queries/useBoardQuery";
-import { useBoardYearsQuery } from "../../../hooks";
+import { useBoardYearsQuery, useBoardMetaQuery } from "../../../hooks";
 import {
 	useCreateBoardMember,
 	useUpdateBoardMember,
 	useDeleteBoardMember,
 } from "../../../hooks/mutations/useBoardMutations";
 
-type BoardMemberType =
+export type BoardMemberType =
 	| "officer"
 	| "branding"
 	| "technical"
@@ -47,6 +47,7 @@ export const useBoardMembers = () => {
 	const [yearFilter, setYearFilter] = useState<string>("All");
 
 	const { data: boardYears } = useBoardYearsQuery();
+	const { data: boardMeta, isLoading: isMetaLoading } = useBoardMetaQuery();
 
 	const yearFrom =
 		yearFilter === "All"
@@ -118,5 +119,7 @@ export const useBoardMembers = () => {
 		isCreating,
 		isUpdating,
 		isDeleting,
+		boardMeta,
+		isMetaLoading,
 	};
 };

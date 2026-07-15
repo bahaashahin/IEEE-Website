@@ -5,7 +5,7 @@ export const selectMemberPosition = (
 ) => {
 	let position: string;
 	if (member.position === "chair") {
-		position = chairGender === "female" ? "chair-Lady" : "chair-man";
+		position = chairGender === "female" ? "chair lady" : "chair man";
 	} else if (["vice branding", "vice technical"].includes(member.position)) {
 		position =
 			chairGender === "female"

@@ -51,7 +51,7 @@ export const useFeedbackManager = () => {
     );
   };
 
-  const toggleStatus = (id: string, newStatus: string) => {
+  const toggleStatus = (id: string, newStatus: FeedbackStatus) => {
     setMutationError(null);
     updateStatus(
       { id, status: newStatus },

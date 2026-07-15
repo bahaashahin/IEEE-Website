@@ -40,6 +40,7 @@ function Dashboard() {
     isCreating,
     isUpdating,
     isDeleting,
+    boardMeta,
   } = useBoardMembers();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -293,6 +294,7 @@ function Dashboard() {
         selectedFile={selectedFile}
         isPending={isCreating || isUpdating}
         errorMessage={formError}
+        boardMeta={boardMeta}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSaveMember}
         onFieldChange={handleFieldChange}

@@ -13,7 +13,7 @@ const Events = () => {
       />
 
       {/* Main Title Section */}
-      <div className="px-4 sm:px-10 py-1 mt-8 max-w-7xl mx-auto">
+      <div className="px-4 sm:px-10 py-1 mt-8 container mx-auto">
         <h2 className="flex flex-col lg:flex-row items-start lg:items-center text-xl sm:text-2xl font-bold gap-3 lg:gap-4 mb-8 leading-relaxed">
           <span className="bg-red-600 text-white px-3 py-1.5 rounded-tr-2xl rounded-br-2xl text-sm sm:text-base whitespace-nowrap shadow-sm">
             Our Events
@@ -26,7 +26,7 @@ const Events = () => {
       </div>
 
       {/* Events Grid Container */}
-      <div className="px-4 sm:px-6 lg:px-10 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto mb-12">
+      <div className="px-4 sm:px-6 lg:px-10 grid grid-cols-1 md:grid-cols-2 gap-6 container mx-auto mb-12">
         {events?.map((event, index) => {
           const isFifthItem = index % 4 === 0 && index > 0;
           return (
