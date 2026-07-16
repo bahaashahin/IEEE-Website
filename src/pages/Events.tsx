@@ -32,7 +32,7 @@ const Events = () => {
           return (
             <div
               key={event._id}
-              className={`${isFifthItem ? "md:col-span-2 flex justify-center w-full" : ""}`}
+              className={`${isFifthItem ? "md:col-span-2 flex justify-center w-full px-8" : ""}`}
             >
               <CardEvent
                 id={event._id}

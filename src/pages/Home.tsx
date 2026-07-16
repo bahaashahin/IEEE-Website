@@ -155,7 +155,7 @@ const Home = () => {
       </div>
 
       {/*  Discover Section */}
-      <div className="px-6 md:px-12 py-16 max-w-7xl mx-auto space-y-12">
+      <div className="px-6 md:px-12 py-16 container mx-auto space-y-12">
         <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-base sm:text-xl lg:text-2xl gap-3 leading-snug">
           <span className="font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-tr-xl rounded-br-xl shadow-md shadow-red-600/10 whitespace-nowrap">
             Discover IEEE Al-Azhar SB
@@ -214,7 +214,7 @@ const Home = () => {
       </div>
 
       {/*  Events Slider Container */}
-      <div className="mt-2 mb-12 max-w-7xl mx-auto">
+      <div className="mt-2 mb-12 container mx-auto">
         {events && (
           <CardSlider
             cards={events.map((event) => (
@@ -225,6 +225,12 @@ const Home = () => {
                 title={event.title}
                 text={event.subtitle ?? "subtitle not found"}
                 date={`${new Date(event.startDate).toLocaleDateString()} - ${event.endDate ? new Date(event.endDate).toLocaleDateString() : "TBD"}`}
+                secondData={
+                  event.startDateSecondV
+                    ? `${new Date(event.startDateSecondV).toLocaleDateString()} - ${event.endDateSecondV ? new Date(event.endDateSecondV).toLocaleDateString() : "TBD"}`
+                    : undefined
+                }
+                registrationLink={event.registrationLink}
                 location={event.location ?? "location not found"}
               />
             ))}
@@ -235,7 +241,7 @@ const Home = () => {
       </div>
 
       {/*  Committees Section */}
-      <section className="w-full px-6 md:px-12 py-16 max-w-7xl mx-auto space-y-8">
+      <section className="w-full px-6 md:px-12 py-16 container mx-auto space-y-8">
         <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-base sm:text-xl lg:text-2xl gap-3">
           <span className="font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-tr-xl rounded-br-xl shadow-md shadow-red-600/10 whitespace-nowrap">
             Our Committees
@@ -285,7 +291,7 @@ const Home = () => {
       </section>
 
       {/*  Our Team Section */}
-      <div className="px-6 pt-8 max-w-7xl mx-auto">
+      <div className="px-6 pt-8 container mx-auto">
         <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-base sm:text-xl lg:text-2xl gap-3">
           <span className="font-extrabold bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-2 rounded-tr-full rounded-br-full shadow-md shadow-red-600/10 whitespace-nowrap">
             Our Team
@@ -296,15 +302,14 @@ const Home = () => {
         </h2>
       </div>
 
-      <div className="mt-6 mb-16 mx-auto max-w-7xl">
+      <div className="mt-6 mb-16 mx-auto container">
         <CardSlider
           cards={officers.map((officer) => (
             <Card
               key={officer.id}
               imageSrc={officer.image_url}
               name={officer.name}
-              title={`${selectMemberPosition(officer, officers[0]?.gender)}`}
-              text={officer.bio}
+              text={`${selectMemberPosition(officer, officers[0]?.gender)}`}
               linkedinLink={officer.linkedin_url}
             />
           ))}

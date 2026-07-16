@@ -214,11 +214,7 @@ const About = () => {
                 <Card
                   key={chairPerson.id}
                   name={chairPerson.name}
-                  title={selectMemberPosition(
-                    chairPerson,
-                    chairPerson.gender,
-                  )}
-                  text={chairPerson.bio}
+                  text={selectMemberPosition(chairPerson, chairPerson.gender)}
                   imageSrc={chairPerson.image_url}
                   linkedinLink={chairPerson.linkedin_url}
                 />
