@@ -6,6 +6,8 @@ interface CardProps {
   title: string;
   text: string;
   date: string;
+  secondData?: string;
+  registrationLink?: string;
   location: string;
   className?: string;
   id?: string;
@@ -16,13 +18,15 @@ const Card = ({
   title,
   text,
   date,
+  secondData,
+  registrationLink,
   location,
   className,
   id,
 }: CardProps) => {
   return (
     <div
-      className={`group w-full max-w-[650px] bg-white shadow-md hover:shadow-xl rounded-2xl p-4 md:p-5 flex flex-col gap-5 mx-auto transition-all duration-300 hover:-translate-y-1 ${className}`}
+      className={`group w-full h-full max-w-[650px] bg-white shadow-md hover:shadow-xl rounded-2xl p-4 md:p-5 flex flex-col gap-5 mx-auto transition-all duration-300 hover:-translate-y-1 ${className}`}
     >
       <div className="w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden rounded-xl bg-slate-100 relative">
         <img
@@ -34,7 +38,7 @@ const Card = ({
         <div className="absolute inset-0 rounded-xl shadow-inner pointer-events-none"></div>
       </div>
 
-      <div className="flex flex-col flex-1 px-1 justify-between">
+      <div className="flex flex-col flex-1 justify-between gap-2">
         <div className="space-y-2">
           <h3 className="text-lg md:text-xl font-bold text-slate-800 tracking-tight line-clamp-1 group-hover:text-[#05568D] transition-colors duration-200">
             {title}
@@ -44,11 +48,19 @@ const Card = ({
           </p>
         </div>
 
-        <div className="mt-4 space-y-2 border-t border-slate-100 pt-3">
+        <div className="border-t-2 border-slate-200"></div>
+        <div className="space-y-2">
           <div className="flex items-center gap-2.5 text-slate-500 text-xs md:text-sm font-medium">
             <FaCalendarAlt className="text-slate-400 text-sm flex-shrink-0" />
             <span className="line-clamp-1">{date}</span>
           </div>
+
+          {secondData && (
+            <div className="flex items-center gap-2.5 text-slate-500 text-xs md:text-sm font-medium">
+              <FaCalendarAlt className="text-slate-400 text-sm flex-shrink-0" />
+              <p className="line-clamp-1">{secondData}</p>
+            </div>
+          )}
 
           <div className="flex items-center gap-2.5 text-slate-500 text-xs md:text-sm font-medium">
             <FaMapMarkerAlt className="text-slate-400 text-sm flex-shrink-0" />
@@ -56,15 +68,29 @@ const Card = ({
           </div>
         </div>
 
-        <Link
-          to={`/eventdetails/${id}`}
-          className="flex items-center gap-3 bg-[#05568D] hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-full transition-all duration-300 mt-5 w-max text-xs md:text-sm shadow-md shadow-blue-900/10 transform active:scale-95"
-        >
-          <span>Explore Event</span>
-          <span className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-0.5">
-            <FaArrowUp className="text-[#05568D] transform rotate-45 text-[10px] md:text-xs" />
-          </span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            to={`/eventdetails/${id}`}
+            className="flex flex-1 justify-center items-center gap-3 bg-[#05568D] hover:bg-blue-700 text-white font-bold py-1.5 px-2.5 rounded-full transition-all duration-300 text-xs md:text-sm shadow-md shadow-blue-900/10 transform active:scale-95"
+          >
+            <span>Explore Event</span>
+            <span className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-0.5">
+              <FaArrowUp className="text-[#05568D] transform rotate-45 text-[10px] md:text-xs" />
+            </span>
+          </Link>
+
+          {registrationLink && (
+            <Link
+              to={registrationLink}
+              className="flex flex-1 justify-center items-center gap-3 bg-[#05568D] hover:bg-blue-700 text-white font-bold py-1.5 px-2.5 rounded-full transition-all duration-300 text-xs md:text-sm shadow-md shadow-blue-900/10 transform active:scale-95"
+            >
+              <span>Register</span>
+              <span className="w-5 h-5 md:w-6 md:h-6 flex items-center justify-center rounded-full bg-white transition-transform group-hover:translate-x-0.5">
+                <FaArrowUp className="text-[#05568D] transform rotate-45 text-[10px] md:text-xs" />
+              </span>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
