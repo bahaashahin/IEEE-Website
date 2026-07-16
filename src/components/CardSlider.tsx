@@ -13,8 +13,11 @@ export default function CardSlider({ cards }: CardSliderProps) {
     cards &&
     cards.length > 0 &&
     cards.map((card, index) => (
-      <SwiperSlide key={index} className="flex justify-center px-2 py-4">
-        <div className="w-full max-w-[420px] md:max-w-[450px] mb-14">
+      <SwiperSlide
+        key={index}
+        className="flex justify-center px-2 py-4 h-auto"
+      >
+        <div className="w-full h-full max-w-[420px] md:max-w-[450px]">
           {card}
         </div>
       </SwiperSlide>
@@ -96,7 +99,7 @@ export default function CardSlider({ cards }: CardSliderProps) {
         }
 
         .swiper-pagination {
-          bottom: 10px !important;
+          bottom: -5px !important;
         }
 
         .swiper-pagination-bullet {
@@ -114,8 +117,8 @@ export default function CardSlider({ cards }: CardSliderProps) {
         }
 
         @media (max-width: 1024px) {
-          .swiper-button-next,
-          .swiper-button-prev {
+            .swiper-button-next,
+            .swiper-button-prev {
             display: none !important;
           }
           .swiper-pagination-bullet {
