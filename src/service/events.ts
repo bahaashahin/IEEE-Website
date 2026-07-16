@@ -14,6 +14,8 @@ export interface SanityEvent {
   slug: { current: string };
   startDate: string;
   endDate: string;
+  startDateSecondV?: string;
+  endDateSecondV?: string;
   location?: string;
   subtitle?: string;
   registrationLink?: string;
@@ -29,9 +31,7 @@ export const getEvents = async (): Promise<SanityEvent[]> => {
   return (json.data ?? json) as SanityEvent[];
 };
 
-export const getEventById = async (
-  id: string,
-): Promise<SanityEvent> => {
+export const getEventById = async (id: string): Promise<SanityEvent> => {
   const res = await fetch(`/api/v1/events/${id}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const json = await res.json();
