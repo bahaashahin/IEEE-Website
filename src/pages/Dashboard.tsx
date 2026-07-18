@@ -110,7 +110,9 @@ function Dashboard() {
 
     const formData = new FormData();
     formData.append("name", currentMember.name);
-    formData.append("email", currentMember.email);
+    if (currentMember.email) {
+      formData.append("email", currentMember.email);
+    }
     formData.append("bio", currentMember.bio);
     formData.append("position", currentMember.position);
     formData.append("memberType", currentMember.memberType);
