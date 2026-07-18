@@ -47,19 +47,19 @@ const MemberFormModal = ({
       );
       return;
     }
-    
+
     if (id === "memberType") {
       const newType = value as BoardMemberType;
       onFieldChange("memberType", newType);
-      
+
       const allowedPositions = boardMeta?.allowedPositionsByType[newType];
       const firstPosition = allowedPositions?.[0] ?? "";
       onFieldChange("position", firstPosition);
-      
+
       onFieldChange("track", "");
       return;
     }
-    
+
     onFieldChange(id as keyof CurrentMemberFormState, value as never);
   };
 
@@ -69,9 +69,9 @@ const MemberFormModal = ({
   };
 
   const memberTypes = boardMeta?.memberTypes ?? ["officer", "technical", "branding", "operation"];
-  
+
   const allowedPositions = boardMeta?.allowedPositionsByType[currentMember.memberType] ?? (
-    currentMember.memberType === "officer" 
+    currentMember.memberType === "officer"
       ? ["chair", "vice technical", "vice branding", "secretary", "treasurer"]
       : ["head", "vice"]
   );
@@ -122,7 +122,6 @@ const MemberFormModal = ({
               <input
                 id="email"
                 type="email"
-                required
                 value={currentMember.email}
                 onChange={handleInputChange}
                 className="w-full px-4 py-2.5 bg-[#0F172A] border border-slate-600 rounded-xl text-white text-sm focus:outline-none focus:border-blue-500"
