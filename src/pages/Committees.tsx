@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Section, CardLogo } from "../components";
 import { useCommitteesQuery } from "../hooks";
-import { BoardMemberType } from "../types";
+import { CommitteesType } from "../types";
 
 const COMMITTEE_TITLES = {
   operation:
@@ -12,8 +12,7 @@ const COMMITTEE_TITLES = {
 };
 
 const Committees = () => {
-  const [activeTab, setActiveTab] =
-    useState<Exclude<BoardMemberType, "officer">>("technical");
+  const [activeTab, setActiveTab] = useState<CommitteesType>("technical");
   const { data: committees, isLoading, error } = useCommitteesQuery();
 
   if (isLoading) {
@@ -40,11 +39,7 @@ const Committees = () => {
               Object.keys(committees).map((section) => (
                 <button
                   key={section}
-                  onClick={() =>
-                    setActiveTab(
-                      section as Exclude<BoardMemberType, "officer">,
-                    )
-                  }
+                  onClick={() => setActiveTab(section as CommitteesType)}
                   className={`px-4 py-1 text-white ${
                     activeTab === section ? "bg-[#05568D]" : "bg-gray-400"
                   } rounded-full w-full sm:w-auto mb-2 sm:mb-0`}
@@ -58,25 +53,53 @@ const Committees = () => {
         {/* Title & Description Section */}
         <h2 className="flex flex-col lg:flex-row items-start lg:items-center text-xl sm:text-2xl font-bold gap-3 lg:gap-4 leading-relaxed">
           <span className="bg-red-600 text-white px-3 py-1.5 rounded-tr-full rounded-br-full text-sm sm:text-base whitespace-nowrap shadow-sm capitalize">
-            {`${activeTab as string} Committee`}
+            {`${activeTab} Committee`}
           </span>
           <span className="text-[#1A1A1A] text-base sm:text-lg font-medium">
-            {COMMITTEE_TITLES[activeTab as keyof typeof COMMITTEE_TITLES]}
+            {COMMITTEE_TITLES[activeTab]}
           </span>
         </h2>
       </div>
 
-      {/* Cards Grid Grid */}
-      <div className="container mx-auto px-4 sm:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-12">
-        {committees &&
-          committees[activeTab as string].map((card) => (
-            <CardLogo
-              key={card._id}
-              imageSrc={card.logo.asset.url}
-              title={card.name}
-              description={card.description}
-            />
-          ))}
+      {/* Content Area */}
+      <div className="container mx-auto px-4 sm:px-10 mt-6 mb-12">
+        {committees && activeTab === "technical" && (
+          <div className="flex flex-col gap-10">
+            {Object.entries(committees.technical).map(([subSectionKey, cards]) => (
+              <div key={subSectionKey} className="flex flex-col gap-4">
+                {/* Sub-section Heading */}
+                <h3 className="text-lg sm:text-xl font-bold capitalize text-[#05568D] border-b pb-2">
+                  {subSectionKey.replaceAll("-", " ")}
+                </h3>
+                {/* Inner Grid for this specific sub-section */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {cards.map((card) => (
+                    <CardLogo
+                      key={card._id}
+                      imageSrc={card.logo?.asset?.url || ""}
+                      title={card.name}
+                      description={card.description}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Flat Layout for Operation and Branding */}
+        {committees && activeTab !== "technical" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {committees[activeTab as Exclude<CommitteesType, "technical">]?.map((card) => (
+              <CardLogo
+                key={card._id}
+                imageSrc={card.logo?.asset?.url || ""}
+                title={card.name}
+                description={card.description}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

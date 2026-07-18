@@ -5,15 +5,23 @@ import { Section, CardSlider, Card, BoardYearSelector } from "../components";
 import { selectMemberPosition } from "../utils/member.position";
 import { BoardMember, BoardMemberType } from "../types";
 
-const sectionsToRender: { title: string; key: BoardMemberType }[] = [
-  { title: "Our Officers", key: "officer" },
-  { title: "Technical Board", key: "technical" },
-  { title: "Branding Board", key: "branding" },
-  { title: "Operation Board", key: "operation" },
+// Keep this clean configuration
+const sectionsToRender: { title: string; key: BoardMemberType; subtitle: string }[] = [
+  { title: "Our Officers", key: "officer", subtitle: "The Heart of IEEE Al-Azhar SB: Talented Individuals, Shared Goals" },
+  { title: "Technical Board", key: "technical", subtitle: "Our main focus, the technical genius" },
+  { title: "Branding Board", key: "branding", subtitle: "Our creative force, the branding guru" },
+  { title: "Operation Board", key: "operation", subtitle: "Our operational force, the operation guru" },
 ];
 
+// Simple helper to transform "software-development" into "Software Development"
+const formatTrackTitle = (slug: string) => {
+  return slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const Board = () => {
-  // Default to current year; the selector will auto-confirm or override this.
   const [selectedYear, setSelectedYear] = useState(
     new Date().getFullYear().toString(),
   );
@@ -23,66 +31,107 @@ const Board = () => {
     memberType: "officer,technical,operation,branding",
   });
 
-  const boardData: Record<BoardMemberType, BoardMember[]> = {
+  // Explicitly separate flat lists from the nested technical object to stop type-fighting
+  const flatBoardData: Record<Exclude<BoardMemberType, "technical">, BoardMember[]> = {
     officer: data?.officer ?? [],
-    technical: data?.technical ?? [],
     branding: data?.branding ?? [],
     operation: data?.operation ?? [],
   };
 
-  const renderBoardSection = (title: string, data: BoardMember[]) => {
-    if (!data || data.length === 0) return null;
+  const technicalData: Record<string, BoardMember[]> = data?.technical ?? {};
+
+  // Standard renderer for normal flat sections
+  const renderStandardSection = (title: string, subtitle: string, members: BoardMember[]) => {
+    if (!members || members.length === 0) return null;
+
     return (
       <Fragment key={title}>
         <div className="py-1 mt-6">
-          <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-lg sm:text-2xl font-bold gap-2">
-            <span className="bg-red-600 text-white px-2 py-1 rounded-tr-2xl rounded-br-2xl">
+          <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-lg sm:text-2xl font-bold gap-2 capitalize">
+            <span className="bg-red-600 text-white px-2 py-1 rounded-r-full">
               {title}
             </span>
             <span className="text-[#000000]">
-              The Heart of IEEE Al-Azhar SB: Talented Individuals, Shared Goals
+              {subtitle}
             </span>
           </h2>
         </div>
-        <CardSlider
-          cards={data.map((member) => {
-            let position = selectMemberPosition(
-              member,
-              boardData?.officer[0]?.gender,
-            );
-            return (
-              <Card
-                key={member.id}
-                name={member.name}
-                // subtitle={position} TODO: we may need these two, not only one text and most of the times wouldn't need facebook and instagram
-                // text={member.bio}
-                text={position}
-                imageSrc={member.image_url}
-                linkedinLink={member.linkedin_url}
-              />
-            );
-          })}
-        />
+        {renderSlider(members)}
       </Fragment>
     );
   };
 
+  // Dedicated renderer for the technical section and its sub-tracks
+  const renderTechnicalSection = (mainTitle: string, subtitle: string) => {
+    const trackEntries = Object.entries(technicalData);
+    if (trackEntries.length === 0) return null;
+
+    return (
+      <Fragment key={mainTitle}>
+        {/* Main Technical Section Header */}
+        <div className="py-1 mt-6">
+          <h2 className="flex flex-col sm:flex-row items-start sm:items-center text-lg sm:text-2xl font-bold gap-2 capitalize">
+            <span className="bg-red-600 text-white px-2 py-1 rounded-r-full">
+              {mainTitle}
+            </span>
+            <span className="text-[#000000]">
+              {subtitle}
+            </span>
+          </h2>
+        </div>
+
+        {/* Dynamic sub-sections for each track layout */}
+        <div className="space-y-6 pl-2 sm:pl-4 mt-4">
+          {trackEntries.map(([trackKey, members]) => {
+            if (!members || members.length === 0) return null;
+
+            return (
+              <div key={trackKey} className="space-y-2">
+                <h3 className="text-md sm:text-xl font-semibold text-gray-800 border-b border-gray-200 pb-1 inline-block">
+                  {formatTrackTitle(trackKey)}
+                </h3>
+                {renderSlider(members)}
+              </div>
+            );
+          })}
+        </div>
+      </Fragment>
+    );
+  };
+
+  // Extracted slider renderer to keep the code DRY
+  const renderSlider = (members: BoardMember[]) => (
+    <CardSlider
+      cards={members.map((member) => {
+        // Fallback to avoid breaking if officer array data is empty during initial load
+        const fallbackGender = data?.officer?.[0]?.gender;
+        const position = selectMemberPosition(member, fallbackGender);
+
+        return (
+          <Card
+            key={member.id}
+            name={member.name}
+            text={position}
+            imageSrc={member.image_url}
+            linkedinLink={member.linkedin_url}
+          />
+        );
+      })}
+    />
+  );
+
   return (
-    <div className="w-full overflow-hidden bg-gray-50/50 ">
+    <div className="w-full overflow-hidden bg-gray-50/50">
       <Section
         text={`We Are IEEE\nThe Heart of Student Tech`}
         additionalText="A community of tech enthusiasts driving innovation"
       />
 
-        <div className="container mx-auto py-6 space-y-8">
-        {/* ── Year selector ─────────────────────────────────────────────────────── */}
+      <div className="container mx-auto py-6 space-y-8">
         <div className="px-10 flex justify-end items-center gap-4">
-          <BoardYearSelector
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-          />
+          <BoardYearSelector selectedYear={selectedYear} onYearChange={setSelectedYear} />
         </div>
-        {/* ── Loading / error states ────────────────────────────────────────────── */}
+
         {isLoading && (
           <div className="flex justify-center items-center h-64">
             <p>Loading…</p>
@@ -95,12 +144,18 @@ const Board = () => {
           </div>
         )}
 
-        {/* ── Board sections ─────────────────────────────────────────────────────── */}
         {!isLoading &&
           !error &&
-          sectionsToRender.map((section) =>
-            renderBoardSection(section.title, boardData[section.key]),
-          )}
+          sectionsToRender.map((section) => {
+            if (section.key === "technical") {
+              return renderTechnicalSection(section.title, section.subtitle);
+            }
+            return renderStandardSection(
+              section.title,
+               section.subtitle,
+              flatBoardData[section.key as Exclude<BoardMemberType, "technical">],
+            );
+          })}
       </div>
     </div>
   );
