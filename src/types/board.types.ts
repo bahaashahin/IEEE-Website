@@ -13,6 +13,4 @@ export interface BoardMember {
 export type BoardMemberType =
   "officer" | "branding" | "technical" | "operation";
 
-export interface BoardMemberResponse {}
-
 export type CommitteesType = Exclude<BoardMemberType, "officer">;
